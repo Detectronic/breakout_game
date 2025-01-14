@@ -17,6 +17,15 @@ typedef struct Button_t {
 }Button_t;
 
 extern Button_t buttons[2];
+#if 0
+typedef struct temp_t{
+  Button_t button;
+  Ball_t ball;
+}temp_t;
+
+#endif
+
+
 
 
 #endif

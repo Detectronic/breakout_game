@@ -106,9 +106,9 @@ void normalizeDirection(void) {
 }
 
 
-bool CheckBallPaddleCollision(float paddleXPos, float paddleYPos , uint16_t width , uint16_t height){
+bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint16_t height){
   //Are we making contact with ANY edge of the paddle
-     if (ball.YPos + 4 >= paddleYPos && ball.YPos <= paddleYPos + height  && ball.XPos + 4 >= paddleXPos && ball.XPos <= paddleXPos + width) {
+     if (ball.YPos + 4 >= objYPos && ball.YPos <= objYPos + height  && ball.XPos + 4 >= objXPos && ball.XPos <= objXPos + width) {
 
      printf("TOUCHED paddle\n");
      //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
@@ -118,26 +118,26 @@ bool CheckBallPaddleCollision(float paddleXPos, float paddleYPos , uint16_t widt
 
          //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
-         if (ball.YPos + 4 == paddleYPos && ball.YDir > 0){
+         if (ball.YPos + 4 == objYPos && ball.YDir > 0){
 
             printf("Bounced of the TOP object\n");
             ball.YDir *= -1;
             return true;
         }
 
-         else if (ball.YPos == paddleYPos + height && ball.YDir < 0){
+         else if (ball.YPos == objYPos + height && ball.YDir < 0){
              printf("Bounced of the BOTTOM object\n");
              ball.YDir *= -1;
              return true;
         }
 
-        else if (ball.XPos + 4 == paddleXPos &&  ball.XDir > 0 ){
+        else if (ball.XPos + 4 == objXPos &&  ball.XDir > 0 ){
             printf("Bounced of the LEFT object\n");
             ball.XDir *= -1;
             return true;
         }
 
-        else if (ball.XPos == paddleXPos + width &&  ball.XDir < 0 ){
+        else if (ball.XPos == objXPos + width &&  ball.XDir < 0 ){
             printf("Bounced of the RIGHT object\n");
             ball.XDir *= -1;
             return true;
@@ -170,7 +170,7 @@ void updateBallPosition(void) {
 
         ball.XDir *= -1;
     }
-    // Bounce off top or endgame of bottom of screen
+    // Bounce off top
     if (ball.YPos <= 0) {
         printf("Bounced of the top wall\n");
         printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
@@ -178,13 +178,14 @@ void updateBallPosition(void) {
 
         ball.YDir *= -1;
     }
+    //Bounces on bottom of the screen
     if (ball.YPos > screenHeight) {
         printf("Bottom wall, out the game\n");
         state = ENDGAME;
     }
 
     // Check for collision with the paddle
-    CheckBallPaddleCollision(paddle.XPos, paddleYposition , paddleWidth , paddleHeight);
+    CheckBallObjCollision(paddle.XPos, paddleYposition , paddleWidth , paddleHeight);
 
     // Check for collision with blocks
     for (int y = 0; y < 7; y++) {
@@ -195,7 +196,7 @@ void updateBallPosition(void) {
 
             if (blocks[y][x].active){
 
-                if(CheckBallPaddleCollision(blocks[y][x].xMax, blocks[y][x].yMax , 8 , 8)){
+                if(CheckBallObjCollision(blocks[y][x].xMax, blocks[y][x].yMax , 8 , 8)){
 
                     blocks[y][x].active = false;
                 }

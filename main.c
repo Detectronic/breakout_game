@@ -26,22 +26,23 @@
 #include "sl_system_process_action.h"
 #endif // SL_CATALOG_KERNEL_PRESENT
 #include "main.h"
-#if 1
+
 Button_t buttons [2] = {
     {
 
     .id = 1,
     .state = true,
-    .triggered = true
+    .triggered = false
     },
 {
   .id = 2,
   .state = true,
-  .triggered = true
+  .triggered = false
 }
 
 };
-#endif
+
+
 int main(void)
 {
   // Initialize Silicon Labs device, system, service(s) and protocol stack(s).
