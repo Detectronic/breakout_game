@@ -11,6 +11,7 @@
 #include "sl_sleeptimer.h"
 #include "control.h"
 #include "main.h"
+#include "settings.h"
 
 // String definitions
 static GLIB_Context_t glibContext;
@@ -22,27 +23,6 @@ static int currentLine = 0;
 //Global varible
 int main_menu = 1;
 
-// Paddle initilazation
-
-Paddle_t paddle = {
-    .XPos = 44,
-    .Direction = 1,
-    .Speed = 2
-};
-
-// Ball initilazation
-
-Ball_t ball = {
-    .XPos = 110.0f,
-    .YPos = 110.0f,
-    .XDir = -1.0f,
-    .YDir =  0.0f,
-    .Speed = 1.0f,
-    .Radius = 4.0f
-};
-
-// New declaration
-Block_t blocks[7][12];
 
 /*******************************************************************************
  **************************   FUNCTION DECLARATIONS   **************************
@@ -105,9 +85,9 @@ void drawPaddle(GLIB_Context_t *pContext) {
     pContext->foregroundColor = Black;
     GLIB_Rectangle_t myBoard;
 
-    myBoard.xMin = paddle.XPos;
+    myBoard.xMin = paddles[1].XPos;
     myBoard.yMin = 110;
-    myBoard.xMax = paddle.XPos + 40; // Paddle width of 40
+    myBoard.xMax = paddles[1].XPos + 40; // Paddle width of 40
     myBoard.yMax = 120;
 
     GLIB_drawRectFilled(pContext, &myBoard);
@@ -120,7 +100,7 @@ void drawGameObjects(void) {
 
     drawBlocks(&glibContext);
     drawPaddle(&glibContext);
-    GLIB_drawCircleFilled(&glibContext, (int)ball.XPos, (int)ball.YPos, (int)ball.Radius);
+    GLIB_drawCircleFilled(&glibContext, (int)balls[1].XPos, (int)balls[1].YPos, (int)balls[1].Radius);
 }
 
 /***************************************************************************//**

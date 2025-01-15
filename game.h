@@ -1,5 +1,6 @@
 #ifndef __GAME_H__
 #define __GAME_H__
+#include "settings.h"
 
 #define paddleWidth 40
 #define paddleHeight 10

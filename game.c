@@ -7,20 +7,20 @@
 #include "glib.h"
 #include "game.h"
 #include "main.h"
-
+#include "settings.h"
 
 
 void reset_game(void){
-  ball.XPos = 64.0f;
-  ball.YPos = 64.0f;
-  ball.XDir = 0.1f;
-  ball.YDir = -1.0f;
-  ball.Speed = 1.0f;
-  ball.Collision = false;
+  balls[1].XPos = 64.0f;
+  balls[1].YPos = 64.0f;
+  balls[1].XDir = 0.1f;
+  balls[1].YDir = -1.0f;
+  balls[1].Speed = 1.0f;
+  balls[1].Collision = false;
 
-  paddle.XPos = 44;
-  paddle.Direction = 1;
-  paddle.Speed = 2;
+  paddles[1].XPos = 44;
+  paddles[1].Direction = 1;
+  paddles[1].Speed = 2;
 
   initializeBlocks();
 }
@@ -52,20 +52,20 @@ void handleBlockCollision(Block_t *block) {
     if (!block->active) return;
 
     // Determine the side of collision
-    bool hitHorizontal = (ball.YPos <= block->yMin || ball.YPos >= block->yMax); // Top/Bottom
-    bool hitVertical = (ball.XPos <= block->xMin || ball.XPos >= block->xMax);   // Left/Right
+    bool hitHorizontal = (balls[1].YPos <= block->yMin || balls[1].YPos >= block->yMax); // Top/Bottom
+    bool hitVertical = (balls[1].XPos <= block->xMin || balls[1].XPos >= block->xMax);   // Left/Right
 
     if (hitHorizontal) {
-        ball.YDir *= -1; // Reverse vertical direction
+        balls[1].YDir *= -1; // Reverse vertical direction
     }
 
     if (hitVertical) {
-        ball.XDir *= -1; // Reverse horizontal direction
+        balls[1].XDir *= -1; // Reverse horizontal direction
     }
 
     // Add slight randomness
-    ball.XDir += (rand() % 3 - 1) * 0.1; // Adjust X slightly by -0.1, 0, or +0.1
-    ball.YDir += (rand() % 3 - 1) * 0.1; // Adjust Y slightly by -0.1, 0, or +0.1
+    balls[1].XDir += (rand() % 3 - 1) * 0.1; // Adjust X slightly by -0.1, 0, or +0.1
+    balls[1].YDir += (rand() % 3 - 1) * 0.1; // Adjust Y slightly by -0.1, 0, or +0.1
 
     normalizeDirection();
 
@@ -79,28 +79,28 @@ void handleBlockCollision(Block_t *block) {
  ******************************************************************************/
 void normalizeDirection(void) {
     // Ensure the ball speed is consistent
-    float magnitude = sqrt(ball.XDir * ball.XDir + ball.YDir * ball.YDir);
-    ball.XDir /= magnitude;
-    ball.YDir /= magnitude;
+    float magnitude = sqrt(balls[1].XDir * balls[1].XDir + balls[1].YDir * balls[1].YDir);
+    balls[1].XDir /= magnitude;
+    balls[1].YDir /= magnitude;
 
     // Prevent perfectly vertical or horizontal movement
-    if (fabs(ball.XDir) < 0.1) {
+    if (fabs(balls[1].XDir) < 0.1) {
 
-        if (ball.XDir < 0){
-            ball.XDir = -0.1;
+        if (balls[1].XDir < 0){
+            balls[1].XDir = -0.1;
         }
         else{
-            ball.XDir = 0.1;
+            balls[1].XDir = 0.1;
         }
 
     }
-    if (fabs(ball.YDir) < 0.1) {
+    if (fabs(balls[1].YDir) < 0.1) {
 
-        if (ball.YDir < 0){
-            ball.YDir = -0.1;
+        if (balls[1].YDir < 0){
+            balls[1].YDir = -0.1;
         }
         else{
-             ball.YDir = 0.1;
+             balls[1].YDir = 0.1;
         }
     }
 }
@@ -108,38 +108,38 @@ void normalizeDirection(void) {
 
 bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint16_t height){
   //Are we making contact with ANY edge of the paddle
-     if (ball.YPos + 4 >= objYPos && ball.YPos <= objYPos + height  && ball.XPos + 4 >= objXPos && ball.XPos <= objXPos + width) {
+     if (balls[1].YPos + 4 >= objYPos && balls[1].YPos <= objYPos + height  && balls[1].XPos + 4 >= objXPos && balls[1].XPos <= objXPos + width) {
 
      printf("TOUCHED paddle\n");
      //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
-     if (!ball.Collision){
-         ball.Collision = true;
+     if (!balls[1].Collision){
+         balls[1].Collision = true;
 
          //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
-         if (ball.YPos + 4 == objYPos && ball.YDir > 0){
+         if (balls[1].YPos + 4 == objYPos && balls[1].YDir > 0){
 
             printf("Bounced of the TOP object\n");
-            ball.YDir *= -1;
+            balls[1].YDir *= -1;
             return true;
         }
 
-         else if (ball.YPos == objYPos + height && ball.YDir < 0){
+         else if (balls[1].YPos == objYPos + height && balls[1].YDir < 0){
              printf("Bounced of the BOTTOM object\n");
-             ball.YDir *= -1;
+             balls[1].YDir *= -1;
              return true;
         }
 
-        else if (ball.XPos + 4 == objXPos &&  ball.XDir > 0 ){
+        else if (balls[1].XPos + 4 == objXPos &&  balls[1].XDir > 0 ){
             printf("Bounced of the LEFT object\n");
-            ball.XDir *= -1;
+            balls[1].XDir *= -1;
             return true;
         }
 
-        else if (ball.XPos == objXPos + width &&  ball.XDir < 0 ){
+        else if (balls[1].XPos == objXPos + width &&  balls[1].XDir < 0 ){
             printf("Bounced of the RIGHT object\n");
-            ball.XDir *= -1;
+            balls[1].XDir *= -1;
             return true;
         }
 
@@ -147,7 +147,7 @@ bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint1
 }
 
      else {
-         ball.Collision = false;
+         balls[1].Collision = false;
  }
 
      return false;
@@ -157,35 +157,36 @@ void updateBallPosition(void) {
 
     int screenWidth = 128;
     int screenHeight = 128;
+    int paddlesYposition = 110;
 
     // Update ball's position
-    ball.XPos += ball.XDir * ball.Speed;
-    ball.YPos += ball.YDir * ball.Speed;
+    balls[1].XPos += balls[1].XDir * balls[1].Speed;
+    balls[1].YPos += balls[1].YDir * balls[1].Speed;
 
     // Bounce off the left and right screen edges
-    if (ball.XPos <= 0 || ball.XPos >= screenWidth) {
+    if (balls[1].XPos <= 0 || balls[1].XPos >= screenWidth) {
         printf("Bounced of the side walls\n");
-        printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
+        printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , balls[1].XDir , balls[1].YDir , balls[1].XPos , balls[1].YPos);
 
 
-        ball.XDir *= -1;
+        balls[1].XDir *= -1;
     }
     // Bounce off top
-    if (ball.YPos <= 0) {
+    if (balls[1].YPos <= 0) {
         printf("Bounced of the top wall\n");
-        printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
+        printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , balls[1].XDir , balls[1].YDir , balls[1].XPos , balls[1].YPos);
 
 
-        ball.YDir *= -1;
+        balls[1].YDir *= -1;
     }
     //Bounces on bottom of the screen
-    if (ball.YPos > screenHeight) {
+    if (balls[1].YPos > screenHeight) {
         printf("Bottom wall, out the game\n");
         state = ENDGAME;
     }
 
     // Check for collision with the paddle
-    CheckBallObjCollision(paddle.XPos, paddleYposition , paddleWidth , paddleHeight);
+    CheckBallObjCollision(paddles[1].XPos, paddlesYposition , paddleWidth , paddleHeight);
 
     // Check for collision with blocks
     for (int y = 0; y < 7; y++) {
@@ -251,28 +252,28 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
 
       case RIGHT:
-        if (paddle.XPos <= 0){
+        if (paddles[1].XPos <= 0){
 
             return;
 
         }
 
-        paddle.Speed = -2;
-        paddle.Direction = -1;
-        paddle.XPos -= 1;
+        paddles[1].Speed = -2;
+        paddles[1].Direction = -1;
+        paddles[1].XPos -= 1;
         break;
 
 
       case LEFT:
-        if (paddle.XPos + 40 >= screenWidth){
+        if (paddles[1].XPos + 40 >= screenWidth){
 
             return;
 
         }
 
-        paddle.Speed = 2;
-        paddle.Direction = 1;
-        paddle.XPos += 1;
+        paddles[1].Speed = 2;
+        paddles[1].Direction = 1;
+        paddles[1].XPos += 1;
         break;
 
     }

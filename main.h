@@ -4,7 +4,8 @@
 /***************************************************************************//**
  * Update the ball position and handle collisions.
  ******************************************************************************/
-
+#include <stdbool.h>
+#include <stdint.h>
 
 #define HIGH true
 #define LOW false
