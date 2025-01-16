@@ -207,7 +207,7 @@ typedef struct setting_item_t{
 
 /*Arguments */
 
-setting_item_t setting_items[4] ={
+setting_item_t setting_items[3] ={
     {
     .str = "Ball Speed",
     .strlen = 10,
@@ -218,12 +218,6 @@ setting_item_t setting_items[4] ={
     .str = "Paddle Sensitivity",
     .strlen = 17,
     .yPos = 70
-    },
-
-    {
-    .str = "Lives",
-    .strlen = 5,
-    .yPos = 100
     },
 
     {
@@ -253,7 +247,7 @@ void memlcd_settings(uint8_t a_settings_menu){
   /* Switch to a smaller font for the settings options */
   GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
 
-  for(int x = 0; x < 4; x++){
+  for(int x = 0; x < 3; x++){
 
         if(x == a_settings_menu){
 

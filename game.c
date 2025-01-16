@@ -69,8 +69,6 @@ void handleBlockCollision(Block_t *block) {
 
     normalizeDirection();
 
-    block->active = false; // Deactivate the block
-
 }
 
 
@@ -193,8 +191,6 @@ void updateBallPosition(void) {
 
         for (int x = 0; x < 12; x++) {
 
-            Block_t *block = &blocks[y][x];
-
             if (blocks[y][x].active){
 
                 if(CheckBallObjCollision(blocks[y][x].xMax, blocks[y][x].yMax , 8 , 8)){
@@ -279,9 +275,3 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
     }
 
 }
-
-
-
-
-
-

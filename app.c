@@ -157,10 +157,6 @@ void app_process_action(void){
                      return;
                      break;
 
-                   case LIVES:
-                     return;
-                     break;
-
                    case MAIN_MENU:
                      state = MAINMENU;
                      break;
@@ -174,7 +170,7 @@ void app_process_action(void){
 
             if (buttons[1].state){
 
-                if (++setting == 4){
+                if (++setting == 3){
 
                     setting = 0;
                 }

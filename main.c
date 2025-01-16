@@ -31,12 +31,12 @@ Button_t buttons [2] = {
     {
 
     .id = 1,
-    .state = true,
+    .state = false,
     .triggered = false
     },
 {
   .id = 2,
-  .state = true,
+  .state = false,
   .triggered = false
 }
 

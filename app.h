@@ -40,8 +40,7 @@ typedef enum Menu_t{
 typedef enum Setting_t{
   BALL_SPEED,         //0
   PADDLE_SENSITIVITY, //1
-  LIVES,              //2
-  MAIN_MENU           //3
+  MAIN_MENU           //2
 }Setting_t;
 
 typedef enum GameOver_t{
