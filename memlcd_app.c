@@ -15,6 +15,8 @@
 
 // String definitions
 static GLIB_Context_t glibContext;
+GLIB_Rectangle_t myBoard;
+
 static int currentLine = 0;
 #ifndef LCD_MAX_LINES
 #define LCD_MAX_LINES      11
@@ -80,14 +82,13 @@ void memlcd_app_init(void) {
 /***************************************************************************//**
  * Draw the paddle on the screen.
  ******************************************************************************/
-void drawPaddle(GLIB_Context_t *pContext) {
+void drawPaddle(GLIB_Context_t *pContext, int paddle_width) {
 
     pContext->foregroundColor = Black;
-    GLIB_Rectangle_t myBoard;
 
-    myBoard.xMin = paddles[1].XPos;
+    myBoard.xMin = game.paddles[0].XPos;
     myBoard.yMin = 110;
-    myBoard.xMax = paddles[1].XPos + 40; // Paddle width of 40
+    myBoard.xMax = game.paddles[0].XPos + paddle_width; // Paddle width of 40
     myBoard.yMax = 120;
 
     GLIB_drawRectFilled(pContext, &myBoard);
@@ -99,8 +100,8 @@ void drawPaddle(GLIB_Context_t *pContext) {
 void drawGameObjects(void) {
 
     drawBlocks(&glibContext);
-    drawPaddle(&glibContext);
-    GLIB_drawCircleFilled(&glibContext, (int)balls[1].XPos, (int)balls[1].YPos, (int)balls[1].Radius);
+    drawPaddle(&glibContext, game.settings.paddle_width );
+    GLIB_drawCircleFilled(&glibContext, (int)game.balls[0].XPos, (int)game.balls[0].YPos, (int)game.balls[0].Radius);
 }
 
 /***************************************************************************//**

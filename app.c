@@ -20,6 +20,7 @@
 #include "memlcd_app.h"
 #include "debug.h"
 #include "main.h"
+#include "settings.h"
 
 
 /*Declerations*/
@@ -29,6 +30,8 @@ State_t state;
 State_t last_state = ERROR;
 
 Menu_t menu;
+
+//int paddle_width = 0;
 
 
 /***************************************************************************//**
@@ -154,6 +157,23 @@ void app_process_action(void){
                      break;
 
                    case PADDLE_SENSITIVITY:
+                     if (buttons[0].state){
+
+                         game.settings.paddle_width = 0;
+                         game.settings.paddle_width++;
+
+                         //Settings_t[paddle_width];
+                         //drawPaddle(game.settings.paddle_width);
+
+                         if (game.settings.paddle_width == 3){
+                             game.settings.paddle_width = 0;
+                     }
+
+               }
+
+
+
+
                      return;
                      break;
 
@@ -168,11 +188,11 @@ void app_process_action(void){
 
                 buttons[1].triggered = false;
 
-            if (buttons[1].state){
+                if (buttons[1].state){
 
-                if (++setting == 3){
+                    if (++setting == 3){
 
-                    setting = 0;
+                        setting = 0;
                 }
             }
 

@@ -43,6 +43,9 @@ Button_t buttons [2] = {
 };
 
 
+Game_t game;
+
+
 int main(void)
 {
   // Initialize Silicon Labs device, system, service(s) and protocol stack(s).

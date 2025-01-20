@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
-#include "settings.h"
 
 // Paddle initilazation
-
+#if 0
 Paddle_t paddles [2] = {
     {
         .XPos = 44,
@@ -14,11 +13,13 @@ Paddle_t paddles [2] = {
 
     },
     {
-        .XPos = 44,
+        .XPos = 84,
         .Direction = -1,
-        .Speed = 4
+        .Speed = 6
 
     }
+
+
 
 };
 
@@ -73,8 +74,28 @@ Ball_t balls [5] = {
 
 };
 
+Settings_t paddle_width [3] = {
+    {
+        50
+
+    },
+    {
+        60
+
+    },
+    {
+        70
+
+    }
+
+};
+
+
+
+
+
 // New declaration
 Block_t blocks[7][12];
-
+#endif
 
 
