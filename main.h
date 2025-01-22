@@ -25,6 +25,7 @@ typedef struct Ball_t{
   float Speed;   // Ball speed in pixels
   float Radius;
   bool Collision;
+  bool InPlay;
 } Ball_t;
 
 typedef struct Paddle_t {
@@ -59,7 +60,7 @@ typedef struct Game_t {
 } Game_t;
 
 extern Game_t game;
-extern Button_t buttons [2];
+extern Button_t buttons[2];
 
 #if 0
 extern Ball_t balls[5];

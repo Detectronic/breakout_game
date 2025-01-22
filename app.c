@@ -157,23 +157,6 @@ void app_process_action(void){
                      break;
 
                    case PADDLE_SENSITIVITY:
-                     if (buttons[0].state){
-
-                         game.settings.paddle_width = 0;
-                         game.settings.paddle_width++;
-
-                         //Settings_t[paddle_width];
-                         //drawPaddle(game.settings.paddle_width);
-
-                         if (game.settings.paddle_width == 3){
-                             game.settings.paddle_width = 0;
-                     }
-
-               }
-
-
-
-
                      return;
                      break;
 
@@ -248,7 +231,7 @@ void app_process_action(void){
                   break;
 
                 case GAMEOVER_MAIN_MENU:
-                  state = MAIN_MENU;
+                  state = MAINMENU;
                   break;
 
               }

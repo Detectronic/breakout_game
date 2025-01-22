@@ -9,37 +9,47 @@
 #include "game.h"
 #include "settings.h"
 
+int number_of_balls_out_game;
+
+bool atLeastOneBallActive = true;
 
 void reset_game(void){
 
-  //TEST CODE
+  atLeastOneBallActive = true;
+
+  number_of_balls_out_game = 0;
+
   game.settings.paddle_width = 60;
   game.settings.number_of_balls = 2;
   game.settings.ball_size = 4;
+  game.settings.ball_speed = 2.0f ;
+  game.settings.paddle_speed = 2;
 
-  //ENDTEST CODE
+  game.balls[1].XPos = 30.0f;
+  game.balls[1].YPos = 64.0f;
+  game.balls[1].XDir = 1.1f;
+  game.balls[1].YDir = -1.0f;
+  game.balls[1].Speed = 1.0f;
+  game.balls[1].Collision = false;
+  game.balls[1].Radius = game.settings.ball_size;
+  game.balls[1].InPlay = true;
+
+
   game.balls[0].XPos = 64.0f;
   game.balls[0].YPos = 64.0f;
   game.balls[0].XDir = 0.1f;
   game.balls[0].YDir = -1.0f;
-  game.balls[0].Speed = 1.0f;
+  game.balls[0].Speed = game.settings.ball_speed;
   game.balls[0].Collision = false;
-
   game.balls[0].Radius = game.settings.ball_size;
+  game.balls[0].InPlay = true;
 
   game.paddles[0].XPos = 44;
   game.paddles[0].Direction = 1;
-  game.paddles[0].Speed = 2;
+  game.paddles[0].Speed = game.settings.paddle_speed;
 
   initializeBlocks();
 }
-
-#define ROWS_OF_BLOCKS 7
-#define COLUMNS_OF_BLOCKS 12
-#define BLOCK_WIDTH 8
-#define BLOCK_HEIGHT 8
-#define BLOCK_PADDING 2
-#define BLOCK_OFFSET 10
 
 void initializeBlocks(void) {
   int counter = 0;
@@ -65,25 +75,28 @@ void initializeBlocks(void) {
 
 void handleBlockCollision(Block_t *block) {
 
-    if (!block->active) return;
+  for (int x = 0; x < game.settings.number_of_balls; x++){
 
-    // Determine the side of collision
-    bool hitHorizontal = (game.balls[0].YPos <= block->yMin || game.balls[0].YPos >= block->yMax); // Top/Bottom
-    bool hitVertical = (game.balls[0].XPos <= block->xMin || game.balls[0].XPos >= block->xMax);   // Left/Right
+      if (!block->active) return;
 
-    if (hitHorizontal) {
-        game.balls[0].YDir *= -1; // Reverse vertical direction
-    }
+      // Determine the side of collision
+      bool hitHorizontal = (game.balls[x].YPos <= block->yMin || game.balls[x].YPos >= block->yMax); // Top/Bottom
+      bool hitVertical = (game.balls[x].XPos <= block->xMin || game.balls[x].XPos >= block->xMax);   // Left/Right
 
-    if (hitVertical) {
-        game.balls[0].XDir *= -1; // Reverse horizontal direction
-    }
+      if (hitHorizontal) {
+          game.balls[x].YDir *= -1; // Reverse vertical direction
+      }
 
-    // Add slight randomness
-    game.balls[0].XDir += (rand() % 3 - 1) * 0.1; // Adjust X slightly by -0.1, 0, or +0.1
-    game.balls[0].YDir += (rand() % 3 - 1) * 0.1; // Adjust Y slightly by -0.1, 0, or +0.1
+      if (hitVertical) {
+          game.balls[x].XDir *= -1; // Reverse horizontal direction
+      }
 
-    normalizeDirection();
+      // Add slight randomness
+      game.balls[x].XDir += (rand() % 3 - 1) * 0.1; // Adjust X slightly by -0.1, 0, or +0.1
+      game.balls[x].YDir += (rand() % 3 - 1) * 0.1; // Adjust Y slightly by -0.1, 0, or +0.1
+
+      normalizeDirection();
+  }
 
 }
 
@@ -121,48 +134,57 @@ void normalizeDirection(void) {
 
 
 bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint16_t height){
-  //Are we making contact with ANY edge of the paddle
-     if (game.balls[0].YPos + game.balls[0].Radius >= objYPos && game.balls[0].YPos <= objYPos + height  && game.balls[0].XPos + game.balls[0].Radius >= objXPos && game.balls[0].XPos <= objXPos + width) {
 
-     printf("TOUCHED paddle\n");
-     //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
+  //for (int x = 0; x < game.settings.number_of_balls; x++)
 
-     if (!game.balls[0].Collision){
-         game.balls[0].Collision = true;
+  for (int x = 0; x < game.settings.number_of_balls; x++){
 
-         //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
-         if (game.balls[0].YPos + game.balls[0].Radius == objYPos && game.balls[0].YDir > 0){
+      //Are we making contact with ANY edge of the paddle
+       if (game.balls[x].YPos + game.balls[0].Radius >= objYPos && game.balls[x].YPos <= objYPos + height  && game.balls[x].XPos + game.balls[x].Radius >= objXPos && game.balls[x].XPos <= objXPos + width) {
 
-            printf("Bounced of the TOP object\n");
-            game.balls[0].YDir *= -1;
-            return true;
-        }
+       printf("TOUCHED paddle\n");
+       //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
-         else if (game.balls[0].YPos == objYPos + height && game.balls[0].YDir < 0){
-             printf("Bounced of the BOTTOM object\n");
-             game.balls[0].YDir *= -1;
-             return true;
-        }
+       if (!game.balls[x].Collision){
+           game.balls[x].Collision = true;
 
-        else if (game.balls[0].XPos + game.balls[0].Radius == objXPos &&  game.balls[0].XDir > 0 ){
-            printf("Bounced of the LEFT object\n");
-            game.balls[0].XDir *= -1;
-            return true;
-        }
+           //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
-        else if (game.balls[0].XPos == objXPos + width &&  game.balls[0].XDir < 0 ){
-            printf("Bounced of the RIGHT object\n");
-            game.balls[0].XDir *= -1;
-            return true;
-        }
+           if (game.balls[x].YPos + game.balls[x].Radius == objYPos && game.balls[x].YDir > 0){
 
-     }
+              printf("Bounced of the TOP object\n");
+              game.balls[x].YDir *= -1;
+              return true;
+          }
+
+           else if (game.balls[x].YPos == objYPos + height && game.balls[x].YDir < 0){
+               printf("Bounced of the BOTTOM object\n");
+               game.balls[x].YDir *= -1;
+               return true;
+          }
+
+          else if (game.balls[x].XPos + game.balls[x].Radius == objXPos &&  game.balls[x].XDir > 0 ){
+              printf("Bounced of the LEFT object\n");
+              game.balls[x].XDir *= -1;
+              return true;
+          }
+
+          else if (game.balls[0].XPos == objXPos + width &&  game.balls[0].XDir < 0 ){
+              printf("Bounced of the RIGHT object\n");
+              game.balls[x].XDir *= -1;
+              return true;
+          }
+
+       }
+  }
+
+       else {
+           game.balls[x].Collision = false;
+   }
+
 }
 
-     else {
-         game.balls[0].Collision = false;
- }
 
      return false;
 }
@@ -173,50 +195,77 @@ void updateBallPosition(void) {
     int screenHeight = 128;
     int paddlesYposition = 110;
 
-    // Update ball's position
-    game.balls[0].XPos += game.balls[0].XDir * game.balls[0].Speed;
-    game.balls[0].YPos += game.balls[0].YDir * game.balls[0].Speed;
-
-    // Bounce off the left and right screen edges
-    if (game.balls[0].XPos <= 0 || game.balls[0].XPos >= screenWidth) {
-        printf("Bounced of the side walls\n");
-        printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
+    for (int x = 0; x < game.settings.number_of_balls;x++){
+        if (game.balls[x].InPlay){
 
 
-        game.balls[0].XDir *= -1;
-    }
-    // Bounce off top
-    if (game.balls[0].YPos <= 0) {
-        printf("Bounced of the top wall\n");
-        printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
+            // Update ball's position
+            game.balls[x].XPos += game.balls[x].XDir * game.balls[x].Speed;
+            game.balls[x].YPos += game.balls[x].YDir * game.balls[x].Speed;
 
 
-        game.balls[0].YDir *= -1;
-    }
-    //Bounces on bottom of the screen
-    if (game.balls[0].YPos > screenHeight) {
-        printf("Bottom wall, out the game\n");
-        state = ENDGAME;
-    }
 
-    // Check for collision with the paddle
-    CheckBallObjCollision(game.paddles[0].XPos, paddlesYposition , game.settings.paddle_width  , paddleHeight);
+            // Bounce off the left and right screen edges
+            if (game.balls[x].XPos <= 0 || game.balls[x].XPos >= screenWidth) {
+                printf("Bounced of the side walls\n");
+                printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
 
-    // Check for collision with game.blocks
-    for (int y = 0; y < 7; y++) {
 
-        for (int x = 0; x < 12; x++) {
+                game.balls[x].XDir *= -1;
+            }
+            // Bounce off top
+            if (game.balls[x].YPos <= 0) {
+                printf("Bounced of the top wall\n");
+                printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
 
-            if (game.blocks[y][x].active){
 
-                if(CheckBallObjCollision(game.blocks[y][x].xMax, game.blocks[y][x].yMax , 8 , 8)){
+                game.balls[x].YDir *= -1;
+            }
 
-                    game.blocks[y][x].active = false;
+            //Bounces on bottom of the screen
+            if (game.balls[x].YPos > screenHeight) {
+                game.balls[x].InPlay = false;
+                number_of_balls_out_game++;
+
+                if (number_of_balls_out_game == game.settings.number_of_balls){
+                    atLeastOneBallActive = false;
+                }
+
+
+
+                //if (game.balls[0].InPlay && game.balls[1].InPlay){
+                 //   state = ENDGAME;
+                //}
+                printf("Bottom wall, out the game\n");
+
+            }
+
+            // Check for collision with the paddle
+            CheckBallObjCollision(game.paddles[0].XPos, paddlesYposition , game.settings.paddle_width  , paddleHeight);
+
+            // Check for collision with game.blocks
+            for (int y = 0; y < 7; y++) {
+
+                for (int x = 0; x < 12; x++) {
+
+                    if (game.blocks[y][x].active){
+
+                        if(CheckBallObjCollision(game.blocks[y][x].xMax, game.blocks[y][x].yMax , BLOCK_WIDTH , BLOCK_HEIGHT)){
+
+                            game.blocks[y][x].active = false;
+                        }
+                    }
+
                 }
             }
 
+        }if (!atLeastOneBallActive){
+            state = ENDGAME;
         }
-    }
+
+
+
+}
 
 }
 
@@ -277,7 +326,7 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
 
       case LEFT:
-        if (game.paddles[0].XPos + 40 >= screenWidth){
+        if (game.paddles[0].XPos + game.settings.paddle_width >= screenWidth){
 
             return;
 

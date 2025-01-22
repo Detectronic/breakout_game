@@ -99,9 +99,13 @@ void drawPaddle(GLIB_Context_t *pContext, int paddle_width) {
  ******************************************************************************/
 void drawGameObjects(void) {
 
-    drawBlocks(&glibContext);
-    drawPaddle(&glibContext, game.settings.paddle_width );
-    GLIB_drawCircleFilled(&glibContext, (int)game.balls[0].XPos, (int)game.balls[0].YPos, (int)game.balls[0].Radius);
+  for (int x = 0; x < game.settings.number_of_balls; x++){
+      if (game.balls[x].InPlay){
+          GLIB_drawCircleFilled(&glibContext, (int)game.balls[x].XPos, (int)game.balls[x].YPos, (int)game.balls[x].Radius);
+      }
+  }
+  drawBlocks(&glibContext);
+  drawPaddle(&glibContext, game.settings.paddle_width );
 }
 
 /***************************************************************************//**
