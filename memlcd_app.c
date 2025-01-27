@@ -13,6 +13,7 @@
 #include "main.h"
 #include "settings.h"
 
+
 // String definitions
 static GLIB_Context_t glibContext;
 GLIB_Rectangle_t myBoard;

@@ -1,3 +1,5 @@
+#ifndef MEMLCD_APP_H
+#define MEMLCD_APP_H
 /***************************************************************************//**
  * @file memlcd_app.h
  * @brief Memory Liquid Crystal Display (LCD) example functions
@@ -17,14 +19,7 @@
 #include <stdbool.h>
 #include <stdint.h>  // For standard integer types
 
-#ifndef MEMLCD_APP_H
-#define MEMLCD_APP_H
 
-
-
-/***************************************************************************//**
- /* Initialize example
- ******************************************************************************/
 void memlcd_app_init(void);
 
 /***************************************************************************//**

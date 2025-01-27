@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include "main.h"
 #include "settings.h"
-#include "game.h"
+//#include "game.h"
 
 void reset_game(void){
 

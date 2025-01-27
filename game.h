@@ -1,6 +1,8 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 
+#include <stdbool.h>
+
 //#define paddleWidth 40
 #define paddleHeight 10
 #define paddleYposition 110
@@ -12,6 +14,8 @@
 #define BLOCK_OFFSET 10
 
 
+extern bool atLeastOneBallActive;
+extern int number_of_balls_out_game;
 
 extern int score;
 

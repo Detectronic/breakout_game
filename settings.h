@@ -2,8 +2,10 @@
 #define __SETTINGS_H__
 #include <stdbool.h>
 
-extern int number_of_balls_out_game;
-extern bool atLeastOneBallActive;
+
+
+int number_of_balls_out_game;
+bool atLeastOneBallActive;
 
 extern void reset_game(void);
 
