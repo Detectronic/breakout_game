@@ -23,6 +23,10 @@
 #include "settings.h"
 
 
+
+score = 0;
+int score_array[4];
+
 /*Declerations*/
 
 State_t state;
@@ -202,7 +206,7 @@ void app_process_action(void){
           }
       }
 
-      memlcd_leaderboard();
+      memlcd_leaderboard(score_array, score);
       break;
 
 

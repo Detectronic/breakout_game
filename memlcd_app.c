@@ -25,6 +25,9 @@ static int currentLine = 0;
 //Global varible
 int main_menu = 1;
 
+int position = 0;
+
+
 
 /*******************************************************************************
  **************************   FUNCTION DECLARATIONS   **************************
@@ -282,7 +285,9 @@ void memlcd_settings(uint8_t a_settings_menu){
 
 
 
-void memlcd_leaderboard(void){
+int memlcd_leaderboard(int *score_array, int score){
+
+  position++;
 
   /* Clear the LCD screen and set the global background to white */
   glibContext.backgroundColor = White;
@@ -302,34 +307,37 @@ void memlcd_leaderboard(void){
   GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
 
   /* Dummy data for the last 5 scores */
-  int scores[5] = {1000, 950, 900, 850, 800};
+  score_array[position] = score;
 
   /* Display ranks and scores in table format */
-  for (int i = 0; i < 5; i++) {
-    char rankStr[4];
-    char scoreStr[6];
 
-    /* Convert rank (1-5) and score to strings */
-    snprintf(rankStr, sizeof(rankStr), "%d.", i + 1);   // Rank, like "1.", "2.", etc.
-    snprintf(scoreStr, sizeof(scoreStr), "%d", scores[i]); // Score, like "1000", "950", etc.
+  int i;
+  i++;
+  //for (int i = 0; i < 5; i++) {
+  char rankStr[4];
+  char scoreStr[6];
 
-    /* Draw rank on the left column */
-    GLIB_drawString(&glibContext,
-                    rankStr,
-                    strlen(rankStr),           // Length of the rank string
-                    10,                        // X-position for rank column
-                    30 + (i * 15),             // Y-position for each row, spaced by 15
-                    true);                     // Transparency mode
+  /* Convert rank (1-5) and score to strings */
+  snprintf(rankStr, sizeof(rankStr), "%d.", i);   // Rank, like "1.", "2.", etc.
+  snprintf(scoreStr, sizeof(scoreStr), "%d", score_array[position]); // Score, like "1000", "950", etc.
 
-    /* Draw score on the right column */
-    GLIB_drawString(&glibContext,
-                    scoreStr,
-                    strlen(scoreStr),          // Length of the score string
-                    70,                        // X-position for score column
-                    30 + (i * 15),             // Y-position for each row, spaced by 15
-                    true);                     // Transparency mode
+  /* Draw rank on the left column */
+  GLIB_drawString(&glibContext,
+                  rankStr,
+                  strlen(rankStr),           // Length of the rank string
+                  10,                        // X-position for rank column
+                  30 + (i * 15),             // Y-position for each row, spaced by 15
+                  true);                     // Transparency mode
 
-    }
+  /* Draw score on the right column */
+  GLIB_drawString(&glibContext,
+                  scoreStr,
+                  strlen(scoreStr),          // Length of the score string
+                  70,                        // X-position for score column
+                  30 + (i * 15),             // Y-position for each row, spaced by 15
+                  true);                     // Transparency mode
+
+    //}
 
   /* Highlight "Return to Main Menu" */
   glibContext.backgroundColor = Black;         // Set background to black for highlight

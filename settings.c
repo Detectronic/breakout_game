@@ -1,101 +1,54 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "main.h"
+#include "settings.h"
+#include "game.h"
 
-// Paddle initilazation
-#if 0
-Paddle_t paddles [2] = {
-    {
-        .XPos = 44,
-        .Direction = 1,
-        .Speed = 2
+void reset_game(void){
 
-    },
-    {
-        .XPos = 84,
-        .Direction = -1,
-        .Speed = 6
+  atLeastOneBallActive = true;
+  number_of_balls_out_game = 0;
 
-    }
+  game.settings.paddle_width = 60;
+  game.settings.number_of_balls = 3;
+  game.settings.ball_size = 4;
+  game.settings.ball_speed = 2.0f ;
+  game.settings.paddle_speed = 2;
 
+  game.balls[1].XPos = 30.0f;
+  game.balls[1].YPos = 64.0f;
+  game.balls[1].XDir = 1.1f;
+  game.balls[1].YDir = -1.0f;
+  game.balls[1].Speed = 1.0f;
+  game.balls[1].Collision = false;
+  game.balls[1].Radius = game.settings.ball_size;
+  game.balls[1].InPlay = true;
 
+  game.balls[0].XPos = 64.0f;
+  game.balls[0].YPos = 64.0f;
+  game.balls[0].XDir = 0.1f;
+  game.balls[0].YDir = -1.0f;
+  game.balls[0].Speed = game.settings.ball_speed;
+  game.balls[0].Collision = false;
+  game.balls[0].Radius = game.settings.ball_size;
+  game.balls[0].InPlay = true;
 
-};
+  game.balls[2].XPos = 64.0f;
+  game.balls[2].YPos = 64.0f;
+  game.balls[2].XDir = 0.1f;
+  game.balls[2].YDir = -1.0f;
+  game.balls[2].Speed = game.settings.ball_speed;
+  game.balls[2].Collision = false;
+  game.balls[2].Radius = game.settings.ball_size;
+  game.balls[2].InPlay = true;
 
-// Ball initilazation
-Ball_t balls [5] = {
-    {
-        .XPos = 110.0f,
-        .YPos = 110.0f,
-        .XDir = -1.0f,
-        .YDir =  0.0f,
-        .Speed = 1.0f,
-        .Radius = 4.0f
+  game.paddles[0].XPos = 44;
+  game.paddles[0].Direction = 1;
+  game.paddles[0].Speed = game.settings.paddle_speed;
 
-    },
-    {
-        .XPos = 110.0f,
-        .YPos = 110.0f,
-        .XDir = -1.0f,
-        .YDir =  0.0f,
-        .Speed = 2.0f,
-        .Radius = 4.0f
-
-
-    },
-    {
-        .XPos = 110.0f,
-        .YPos = 110.0f,
-        .XDir = -1.0f,
-        .YDir =  0.0f,
-        .Speed = 3.0f,
-        .Radius = 4.0f
-
-    },
-    {
-        .XPos = 110.0f,
-        .YPos = 110.0f,
-        .XDir = -1.0f,
-        .YDir =  0.0f,
-        .Speed = 4.0f,
-        .Radius = 4.0f
-
-    },
-    {
-        .XPos = 110.0f,
-        .YPos = 110.0f,
-        .XDir = -1.0f,
-        .YDir =  0.0f,
-        .Speed = 5.0f,
-        .Radius = 4.0f
-
-    }
-
-};
-
-Settings_t paddle_width [3] = {
-    {
-        50
-
-    },
-    {
-        60
-
-    },
-    {
-        70
-
-    }
-
-};
-
-
-
-
-
-// New declaration
-Block_t blocks[7][12];
-#endif
+  initializeBlocks();
+}
 
 

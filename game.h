@@ -12,7 +12,9 @@
 #define BLOCK_OFFSET 10
 
 
-extern void reset_game(void);
+
+extern int score;
+
 extern void initializeBlocks(void);
 extern void normalizeDirection(void);
 extern void handleBlockCollision(Block_t *block);
