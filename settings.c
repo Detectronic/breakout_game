@@ -6,7 +6,11 @@
 #include "settings.h"
 //#include "game.h"
 
+int number_of_balls_out_game;
+bool atLeastOneBallActive;
+
 void reset_game(void){
+
 
   atLeastOneBallActive = true;
   number_of_balls_out_game = 0;

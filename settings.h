@@ -4,8 +4,8 @@
 
 
 
-int number_of_balls_out_game;
-bool atLeastOneBallActive;
+extern bool atLeastOneBallActive;
+extern int number_of_balls_out_game;
 
 extern void reset_game(void);
 
