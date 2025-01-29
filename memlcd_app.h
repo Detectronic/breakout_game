@@ -20,6 +20,7 @@
 #include <stdint.h>  // For standard integer types
 
 
+
 void memlcd_app_init(void);
 
 /***************************************************************************//**

@@ -44,7 +44,7 @@ Button_t buttons [2] = {
 
 
 Game_t game;
-
+Leaderboard_t leader;
 
 int main(void)
 {

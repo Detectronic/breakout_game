@@ -4,12 +4,26 @@
 #include <stdbool.h>
 #include "main.h"
 #include "settings.h"
-//#include "game.h"
 
 int number_of_balls_out_game;
 bool atLeastOneBallActive;
+int position = 0;
 
 void reset_game(void){
+
+
+
+  printf("\nPosition at the START of the loop reset game: %d",position);
+
+
+  position++;
+  leader.row++;
+
+
+
+  printf("\nPosition at the END of the loop reset game: %d",position);
+
+
 
 
   atLeastOneBallActive = true;

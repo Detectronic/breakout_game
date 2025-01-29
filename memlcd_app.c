@@ -26,7 +26,6 @@ static int currentLine = 0;
 //Global varible
 int main_menu = 1;
 
-int position = 0;
 
 
 
@@ -157,6 +156,7 @@ menu_item_t menu_items[3] = {
 
 
 void memlcd_mainmenu(uint8_t a_main_menu){
+  sl_sleeptimer_delay_millisecond(1000);
 
   reset_game();
 
@@ -202,6 +202,9 @@ void memlcd_mainmenu(uint8_t a_main_menu){
   }
 
   DMD_updateDisplay();
+
+
+
 
 }
 
@@ -288,7 +291,16 @@ void memlcd_settings(uint8_t a_settings_menu){
 
 int memlcd_leaderboard(int *score_array, int score){
 
-  position++;
+
+
+
+
+  printf("\nPosition BEFORE entering loop: %d",position);
+  printf("\nscore BEFORE entering loop: %d",score);
+
+
+
+
 
   /* Clear the LCD screen and set the global background to white */
   glibContext.backgroundColor = White;
@@ -307,38 +319,65 @@ int memlcd_leaderboard(int *score_array, int score){
   /* Set font for the leaderboard items */
   GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
 
-  /* Dummy data for the last 5 scores */
   score_array[position] = score;
 
   /* Display ranks and scores in table format */
 
-  int i;
-  i++;
-  //for (int i = 0; i < 5; i++) {
-  char rankStr[4];
-  char scoreStr[6];
 
-  /* Convert rank (1-5) and score to strings */
-  snprintf(rankStr, sizeof(rankStr), "%d.", i);   // Rank, like "1.", "2.", etc.
-  snprintf(scoreStr, sizeof(scoreStr), "%d", score_array[position]); // Score, like "1000", "950", etc.
 
-  /* Draw rank on the left column */
-  GLIB_drawString(&glibContext,
-                  rankStr,
-                  strlen(rankStr),           // Length of the rank string
-                  10,                        // X-position for rank column
-                  30 + (i * 15),             // Y-position for each row, spaced by 15
-                  true);                     // Transparency mode
+  for (int i = 0; i < 5; i++) {
 
-  /* Draw score on the right column */
-  GLIB_drawString(&glibContext,
-                  scoreStr,
-                  strlen(scoreStr),          // Length of the score string
-                  70,                        // X-position for score column
-                  30 + (i * 15),             // Y-position for each row, spaced by 15
-                  true);                     // Transparency mode
+      printf("\nscore BEFORE entering loop: %d",score);
+      printf("\nleader.row BEFORE char of the loop: %d",leader.row);
 
-    //}
+
+      if (leader.row > 5){
+          leader.row = 0;
+      }
+
+
+
+      printf("\nscore BEFORE char of the loop: %d",score);
+
+
+
+
+      char rankStr[4];
+      char scoreStr[6];
+
+      /* Convert rank (1-5) and score to strings */
+      snprintf(rankStr, sizeof(rankStr), "%d.", leader.row);   // Rank, like "1.", "2.", etc.
+      snprintf(scoreStr, sizeof(scoreStr), "%d", score_array[position]); // Score, like "1000", "950", etc.
+
+      /* Draw rank on the left column */
+      GLIB_drawString(&glibContext,
+                      rankStr,
+                      strlen(rankStr),           // Length of the rank string
+                      10,                        // X-position for rank column
+                      30 + (i * 15),             // Y-position for each row, spaced by 15
+                      true);                     // Transparency mode
+
+      /* Draw score on the right column */
+      GLIB_drawString(&glibContext,
+                      scoreStr,
+                      strlen(scoreStr),          // Length of the score string
+                      70,                        // X-position for score column
+                      30 + (i * 15),             // Y-position for each row, spaced by 15
+                      true);                     // Transparency mode
+
+
+
+
+      printf("\nPosition at the END of the loop: %d",position);
+      printf("\nscore at the END entering loop: %d",score);
+      printf("\n 1 score array %d", score_array[0]);
+      printf("\n 2 score array %d", score_array[1]);
+      printf("\n 3 score array %d", score_array[2]);
+      printf("\n 4 score array %d", score_array[3]);
+      printf("\n 5 score array %d", score_array[4]);
+
+
+        }
 
   /* Highlight "Return to Main Menu" */
   glibContext.backgroundColor = Black;         // Set background to black for highlight
@@ -353,6 +392,8 @@ int memlcd_leaderboard(int *score_array, int score){
   /* Reset colors after highlighting */
   glibContext.backgroundColor = White;
   glibContext.foregroundColor = Black;
+
+
 
   /* Update the display */
   DMD_updateDisplay();

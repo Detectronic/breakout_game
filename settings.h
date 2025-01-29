@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 
-
+extern int position;
 extern bool atLeastOneBallActive;
 extern int number_of_balls_out_game;
 
