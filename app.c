@@ -21,11 +21,11 @@
 #include "debug.h"
 #include "main.h"
 #include "settings.h"
-
+#include "game.h"
 
 
 score = 0;
-int score_array[4];
+
 
 /*Declerations*/
 
@@ -117,6 +117,9 @@ void app_process_action(void){
       break;
 
     case GAME:
+
+
+
       if (new_state){
 
             printf("GAME\n");
@@ -191,9 +194,12 @@ void app_process_action(void){
 
     case LEADERBOARD:
 
+
+
       if (new_state){
 
-            printf("LEADERBAORD\n");
+
+          printf("LEADERBAORD\n");
 
         }
       if (buttons[0].triggered){
@@ -206,15 +212,29 @@ void app_process_action(void){
           }
       }
 
+      printf("\nThe score before the memlcd_leaderboard(app.c): %d", score);
+
       memlcd_leaderboard(score_array, score);
       break;
 
 
     case ENDGAME:
 
+
+
+      score = 0;
+
+
+
+
+
+
+
       if (new_state){
 
-            printf("ENDGAME\n");
+          position++;
+
+          printf("ENDGAME\n");
 
         }
 
@@ -231,6 +251,7 @@ void app_process_action(void){
                   break;
 
                 case GAMEOVER_LEADERBOARD:
+
                   state = LEADERBOARD;
                   break;
 

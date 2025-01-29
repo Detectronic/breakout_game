@@ -10,6 +10,8 @@
 #include "settings.h"
 
 
+int score_array[5];
+
 void initializeBlocks(void) {
   int counter = 0;
 
@@ -210,7 +212,13 @@ void updateBallPosition(void) {
                         if(CheckBallObjCollision(game.blocks[y][x].xMax, game.blocks[y][x].yMax , BLOCK_WIDTH , BLOCK_HEIGHT)){
 
                             game.blocks[y][x].active = false;
+
+
                             score++;
+
+                            printf("Score before adding to position");
+
+                            score_array[position] = score;
                         }
                     }
 

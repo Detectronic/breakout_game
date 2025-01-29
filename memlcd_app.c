@@ -156,7 +156,6 @@ menu_item_t menu_items[3] = {
 
 
 void memlcd_mainmenu(uint8_t a_main_menu){
-  sl_sleeptimer_delay_millisecond(1000);
 
   reset_game();
 
@@ -319,7 +318,7 @@ int memlcd_leaderboard(int *score_array, int score){
   /* Set font for the leaderboard items */
   GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
 
-  score_array[position] = score;
+  //score_array[2] = score;
 
   /* Display ranks and scores in table format */
 
@@ -328,7 +327,7 @@ int memlcd_leaderboard(int *score_array, int score){
   for (int i = 0; i < 5; i++) {
 
       printf("\nscore BEFORE entering loop: %d",score);
-      printf("\nleader.row BEFORE char of the loop: %d",leader.row);
+      printf("\nleader.row BEFORE char of the loop: %d",position);
 
 
       if (leader.row > 5){

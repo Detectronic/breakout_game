@@ -54,6 +54,7 @@ typedef struct Settings_t {
 typedef struct Leaderboard_t{
   int row;
   int score;
+  int leaders[5];
 }Leaderboard_t;
 
 typedef struct Game_t {

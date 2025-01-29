@@ -17,6 +17,7 @@
 
 
 extern int score;
+extern int score_array[5];
 
 extern void initializeBlocks(void);
 extern void normalizeDirection(void);

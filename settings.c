@@ -11,13 +11,15 @@ int position = 0;
 
 void reset_game(void){
 
+  //position = 0;
+
 
 
   printf("\nPosition at the START of the loop reset game: %d",position);
 
 
-  position++;
-  leader.row++;
+
+  //leader.row++;
 
 
 
