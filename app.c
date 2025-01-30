@@ -212,7 +212,7 @@ void app_process_action(void){
           }
       }
 
-      printf("\nThe score before the memlcd_leaderboard(app.c): %d", score);
+
 
       memlcd_leaderboard(score_array, score);
       break;

@@ -213,10 +213,7 @@ void updateBallPosition(void) {
 
                             game.blocks[y][x].active = false;
 
-
                             score++;
-
-                            printf("Score before adding to position");
 
                             score_array[position] = score;
                         }

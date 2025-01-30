@@ -286,18 +286,32 @@ void memlcd_settings(uint8_t a_settings_menu){
 
 }
 
+int sort_leaderboard(int *score_array, int score){
+
+  for (int i = 0; i < position; i++){
+
+      if (score_array[i] < score_array[i+1] ){
+
+          int temp = score_array[i+1];
+          score_array[i+1] = score_array[i];
+          score_array[i] = temp;
+
+      }
+  }
+
+  printf("\nscore AFTER sorting: %d",score);
+  printf("\n 1 score array %d", score_array[0]);
+  printf("\n 2 score array %d", score_array[1]);
+  printf("\n 3 score array %d", score_array[2]);
+  printf("\n 4 score array %d", score_array[3]);
+  printf("\n 5 score array %d", score_array[4]);
+
+}
+
+
 
 
 int memlcd_leaderboard(int *score_array, int score){
-
-
-
-
-
-  printf("\nPosition BEFORE entering loop: %d",position);
-  printf("\nscore BEFORE entering loop: %d",score);
-
-
 
 
 
@@ -324,29 +338,17 @@ int memlcd_leaderboard(int *score_array, int score){
 
 
 
-  for (int i = 0; i < 5; i++) {
-
-      printf("\nscore BEFORE entering loop: %d",score);
-      printf("\nleader.row BEFORE char of the loop: %d",position);
+  for (int i = 0; i < 5; i++){
 
 
-      if (leader.row > 5){
-          leader.row = 0;
-      }
-
-
-
-      printf("\nscore BEFORE char of the loop: %d",score);
-
-
-
+      printf("Leader row: %d", leader.row);
 
       char rankStr[4];
       char scoreStr[6];
 
       /* Convert rank (1-5) and score to strings */
-      snprintf(rankStr, sizeof(rankStr), "%d.", leader.row);   // Rank, like "1.", "2.", etc.
-      snprintf(scoreStr, sizeof(scoreStr), "%d", score_array[position]); // Score, like "1000", "950", etc.
+      snprintf(rankStr, sizeof(rankStr), "%d.", i + 1);   // Rank, like "1.", "2.", etc.
+      snprintf(scoreStr, sizeof(scoreStr), "%d", score_array[i]); // Score, like "1000", "950", etc.
 
       /* Draw rank on the left column */
       GLIB_drawString(&glibContext,
@@ -362,18 +364,23 @@ int memlcd_leaderboard(int *score_array, int score){
                       strlen(scoreStr),          // Length of the score string
                       70,                        // X-position for score column
                       30 + (i * 15),             // Y-position for each row, spaced by 15
-                      true);                     // Transparency mode
+                      true);                     // Transparency mod
 
 
 
 
-      printf("\nPosition at the END of the loop: %d",position);
-      printf("\nscore at the END entering loop: %d",score);
+      printf("\nscores BEFORE sorting:");
       printf("\n 1 score array %d", score_array[0]);
       printf("\n 2 score array %d", score_array[1]);
       printf("\n 3 score array %d", score_array[2]);
       printf("\n 4 score array %d", score_array[3]);
       printf("\n 5 score array %d", score_array[4]);
+
+      sort_leaderboard(score_array,score);
+
+
+
+
 
 
         }

@@ -11,22 +11,6 @@ int position = 0;
 
 void reset_game(void){
 
-  //position = 0;
-
-
-
-  printf("\nPosition at the START of the loop reset game: %d",position);
-
-
-
-  //leader.row++;
-
-
-
-  printf("\nPosition at the END of the loop reset game: %d",position);
-
-
-
 
   atLeastOneBallActive = true;
   number_of_balls_out_game = 0;
