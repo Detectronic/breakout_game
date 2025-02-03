@@ -32,6 +32,7 @@ typedef struct Paddle_t {
   float XPos;
   float Direction;
   float Speed;
+  //int paddle_position;
 } Paddle_t;
 
 typedef struct Block_t {

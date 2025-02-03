@@ -26,6 +26,11 @@
 
 score = 0;
 
+int paddle_sensitivity_setting = 1;
+
+int number_of_balls = 1;
+int ball_speed = 1;
+int ball_size = 2;
 
 /*Declerations*/
 
@@ -71,6 +76,8 @@ void app_process_action(void){
     case MAINMENU:
 
       if (new_state){
+
+          menu = MENU_START;
 
           printf("MAINMENU\n");
 
@@ -147,8 +154,9 @@ void app_process_action(void){
     case SETTINGS:
 
       if (new_state){
+        setting = BALL_SPEED;
 
-            printf("SETTING\n");
+        printf("SETTING\n");
 
         }
 
@@ -160,10 +168,45 @@ void app_process_action(void){
                  switch(setting){
 
                    case BALL_SPEED:
+
+                     ball_speed++;
+
+                     if (ball_speed > 5){
+                         ball_speed = 1;
+                     }
+
                      return;
                      break;
 
                    case PADDLE_SENSITIVITY:
+
+                     paddle_sensitivity_setting++;
+
+
+                     if (paddle_sensitivity_setting == 10){
+                         paddle_sensitivity_setting = 1;
+                     }
+
+                     return;
+                     break;
+
+                   case NUMBER_OF_BALLS:
+
+                     number_of_balls++;
+
+                     if (number_of_balls > 3){
+                         number_of_balls = 1;
+                     }
+
+                     return;
+                     break;
+
+                   case BALL_SIZE:
+                     ball_size++;
+                     if (ball_size > 10){
+                         ball_size = 2;
+                     }
+
                      return;
                      break;
 
@@ -180,7 +223,7 @@ void app_process_action(void){
 
                 if (buttons[1].state){
 
-                    if (++setting == 3){
+                    if (++setting == 5){
 
                         setting = 0;
                 }
@@ -231,6 +274,7 @@ void app_process_action(void){
 
 
       if (new_state){
+          gameover = PLAY_AGAIN;
 
           position++;
 

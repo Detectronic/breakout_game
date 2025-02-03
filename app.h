@@ -40,7 +40,9 @@ typedef enum Menu_t{
 typedef enum Setting_t{
   BALL_SPEED,         //0
   PADDLE_SENSITIVITY, //1
-  MAIN_MENU           //2
+  NUMBER_OF_BALLS,    //2
+  BALL_SIZE,          //3
+  MAIN_MENU           //4
 }Setting_t;
 
 typedef enum GameOver_t{
@@ -61,6 +63,10 @@ extern Setting_t setting;
 extern State_t state;
 extern Menu_t menu;
 
+extern paddle_sensitivity_setting;
+extern number_of_balls;
+extern ball_speed;
+extern ball_size;
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/

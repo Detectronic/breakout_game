@@ -284,7 +284,7 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
         game.paddles[0].Speed = -2;
         game.paddles[0].Direction = -1;
-        game.paddles[0].XPos -= 1;
+        game.paddles[0].XPos -= paddle_sensitivity_setting;
         break;
 
 
@@ -297,7 +297,7 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
         game.paddles[0].Speed = 2;
         game.paddles[0].Direction = 1;
-        game.paddles[0].XPos += 1;
+        game.paddles[0].XPos += paddle_sensitivity_setting;
         break;
 
     }

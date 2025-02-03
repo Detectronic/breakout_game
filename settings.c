@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "main.h"
 #include "settings.h"
+#include "app.h"
 
 int number_of_balls_out_game;
 bool atLeastOneBallActive;
@@ -16,16 +17,17 @@ void reset_game(void){
   number_of_balls_out_game = 0;
 
   game.settings.paddle_width = 60;
-  game.settings.number_of_balls = 3;
-  game.settings.ball_size = 4;
-  game.settings.ball_speed = 2.0f ;
-  game.settings.paddle_speed = 2;
+
+  game.settings.number_of_balls = number_of_balls;
+  game.settings.ball_size = ball_size;
+  game.settings.ball_speed = (float)ball_speed ;
+  game.settings.paddle_speed = paddle_sensitivity_setting;
 
   game.balls[1].XPos = 30.0f;
   game.balls[1].YPos = 64.0f;
   game.balls[1].XDir = 1.1f;
   game.balls[1].YDir = -1.0f;
-  game.balls[1].Speed = 1.0f;
+  game.balls[1].Speed = game.settings.ball_speed;
   game.balls[1].Collision = false;
   game.balls[1].Radius = game.settings.ball_size;
   game.balls[1].InPlay = true;

@@ -108,7 +108,7 @@ void drawGameObjects(void) {
       }
   }
   drawBlocks(&glibContext);
-  drawPaddle(&glibContext, game.settings.paddle_width );
+  drawPaddle(&glibContext, game.settings.paddle_width);
 }
 
 /***************************************************************************//**
@@ -218,19 +218,28 @@ typedef struct setting_item_t{
 
 /*Arguments */
 
-setting_item_t setting_items[3] ={
+setting_item_t setting_items[5] ={
     {
     .str = "Ball Speed",
     .strlen = 10,
-    .yPos = 50
+    .yPos = 30
     },
 
     {
     .str = "Paddle Sensitivity",
     .strlen = 17,
+    .yPos = 50
+    },
+    {
+    .str = "Number of balls",
+    .strlen = 15,
     .yPos = 70
     },
-
+    {
+    .str = "Ball size",
+    .strlen = 9,
+    .yPos = 90
+    },
     {
     .str = "Main menu",
     .strlen = 9,
@@ -258,7 +267,7 @@ void memlcd_settings(uint8_t a_settings_menu){
   /* Switch to a smaller font for the settings options */
   GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
 
-  for(int x = 0; x < 3; x++){
+  for(int x = 0; x < 5; x++){
 
         if(x == a_settings_menu){
 
