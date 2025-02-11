@@ -23,14 +23,13 @@
 #include "settings.h"
 #include "game.h"
 
-
 score = 0;
 
 int paddle_sensitivity_setting = 1;
-
 int number_of_balls = 1;
 int ball_speed = 1;
 int ball_size = 2;
+int game_setting;
 
 /*Declerations*/
 
@@ -63,6 +62,7 @@ void app_process_action(void){
   static int setting = 0;
   static int gameover = 0;
 
+
   bool new_state = false;
   if (state != last_state){
 
@@ -76,6 +76,8 @@ void app_process_action(void){
     case MAINMENU:
 
       if (new_state){
+
+          flash_load_user_data();
 
           menu = MENU_START;
 
@@ -169,43 +171,69 @@ void app_process_action(void){
 
                    case BALL_SPEED:
 
+                     game_setting = ball_speed;
+
                      ball_speed++;
 
                      if (ball_speed > 5){
                          ball_speed = 1;
+
+
                      }
+
+
 
                      return;
                      break;
 
                    case PADDLE_SENSITIVITY:
 
+                     game_setting = paddle_sensitivity_setting;
+
                      paddle_sensitivity_setting++;
 
 
-                     if (paddle_sensitivity_setting == 10){
+                     if (paddle_sensitivity_setting > 5){
                          paddle_sensitivity_setting = 1;
+
+
                      }
+
+
+
 
                      return;
                      break;
 
                    case NUMBER_OF_BALLS:
 
+                     game_setting = number_of_balls;
+
                      number_of_balls++;
 
-                     if (number_of_balls > 3){
+                     if (number_of_balls > 5){
                          number_of_balls = 1;
                      }
+
+
+
+
 
                      return;
                      break;
 
                    case BALL_SIZE:
+
+                     game_setting = ball_size;
+
                      ball_size++;
-                     if (ball_size > 10){
+
+                     if (ball_size > 5){
                          ball_size = 2;
+
                      }
+
+
 
                      return;
                      break;
@@ -232,14 +260,18 @@ void app_process_action(void){
         }
 
 
-      memlcd_settings(setting);
+
+      memlcd_settings(setting,game_setting );
       break;
 
     case LEADERBOARD:
 
 
 
+
       if (new_state){
+
+
 
 
           printf("LEADERBAORD\n");
@@ -257,18 +289,19 @@ void app_process_action(void){
 
 
 
-      memlcd_leaderboard(score_array, score);
+      memlcd_leaderboard(leaderboard_score.score_array, score);
       break;
 
 
     case ENDGAME:
 
+      if (position > 5){
 
+          position = 0;
+
+      }
 
       score = 0;
-
-
-
 
 
 

@@ -6,9 +6,10 @@
 #include "settings.h"
 #include "app.h"
 
+int position = 0;
 int number_of_balls_out_game;
 bool atLeastOneBallActive;
-int position = 0;
+
 
 void reset_game(void){
 
@@ -49,6 +50,24 @@ void reset_game(void){
   game.balls[2].Collision = false;
   game.balls[2].Radius = game.settings.ball_size;
   game.balls[2].InPlay = true;
+
+  game.balls[3].XPos = 64.0f;
+  game.balls[3].YPos = 64.0f;
+  game.balls[3].XDir = 0.1f;
+  game.balls[3].YDir = -1.0f;
+  game.balls[3].Speed = game.settings.ball_speed;
+  game.balls[3].Collision = false;
+  game.balls[3].Radius = game.settings.ball_size;
+  game.balls[3].InPlay = true;
+
+  game.balls[4].XPos = 64.0f;
+  game.balls[4].YPos = 64.0f;
+  game.balls[4].XDir = 0.1f;
+  game.balls[4].YDir = -1.0f;
+  game.balls[4].Speed = game.settings.ball_speed;
+  game.balls[4].Collision = false;
+  game.balls[4].Radius = game.settings.ball_size;
+  game.balls[4].InPlay = true;
 
   game.paddles[0].XPos = 44;
   game.paddles[0].Direction = 1;

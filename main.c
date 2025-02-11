@@ -27,6 +27,8 @@
 #endif // SL_CATALOG_KERNEL_PRESENT
 #include "main.h"
 
+
+
 Button_t buttons [2] = {
     {
 
@@ -43,8 +45,9 @@ Button_t buttons [2] = {
 };
 
 
+
 Game_t game;
-Leaderboard_t leader;
+Leaderboardscore_t leaderboard_score;
 
 int main(void)
 {

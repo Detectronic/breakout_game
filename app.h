@@ -67,6 +67,7 @@ extern paddle_sensitivity_setting;
 extern number_of_balls;
 extern ball_speed;
 extern ball_size;
+extern game_setting;
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/

@@ -52,11 +52,12 @@ typedef struct Settings_t {
     int paddle_speed;
 } Settings_t;
 
-typedef struct Leaderboard_t{
-  int row;
-  int score;
-  int leaders[5];
-}Leaderboard_t;
+typedef struct Leaderboardscore_t{
+  int score_array[5];
+  //int position;
+  int unqiue_var;
+}Leaderboardscore_t;
+
 
 typedef struct Game_t {
    Ball_t balls[5];
@@ -68,7 +69,7 @@ typedef struct Game_t {
 
 extern Game_t game;
 extern Button_t buttons[2];
-extern Leaderboard_t leader;
+extern Leaderboardscore_t leaderboard_score;
 
 #if 0
 extern Ball_t balls[5];

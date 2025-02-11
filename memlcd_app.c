@@ -12,6 +12,7 @@
 #include "control.h"
 #include "main.h"
 #include "settings.h"
+#include "flash.h"
 
 
 // String definitions
@@ -157,7 +158,11 @@ menu_item_t menu_items[3] = {
 
 void memlcd_mainmenu(uint8_t a_main_menu){
 
+  //leaderboard_score.position = 0;
+
   reset_game();
+
+
 
   /* Clear the LCD screen with background color */
   glibContext.backgroundColor = White;
@@ -247,7 +252,15 @@ setting_item_t setting_items[5] ={
     }
 };
 
-void memlcd_settings(uint8_t a_settings_menu){
+
+
+
+
+void memlcd_settings(uint8_t a_settings_menu,int *a_game_settings ){
+
+  char game_settings[50];
+
+  printf("\nGame setting: %d",a_game_settings);
 
   glibContext.backgroundColor = White;
   glibContext.foregroundColor = Black;
@@ -273,7 +286,18 @@ void memlcd_settings(uint8_t a_settings_menu){
 
             glibContext.backgroundColor = Black;
             glibContext.foregroundColor = White;
+
+            sprintf(game_settings,"%d", a_game_settings);
+
+            GLIB_drawString(&glibContext,
+                            game_settings,
+                            5,                             // Length of the string "Start"
+                            10,                            // X-position for centering
+                            setting_items[x].yPos,         // Y-position for "Start" option
+                            true);                         // Transparency mode
+
         }
+
 
         else {
 
@@ -288,7 +312,12 @@ void memlcd_settings(uint8_t a_settings_menu){
                         30,                            // X-position for centering
                         setting_items[x].yPos,         // Y-position for "Start" option
                         true);                         // Transparency mode
+
+
+
   }
+
+
 
   /* Update the display */
   DMD_updateDisplay();
@@ -299,11 +328,11 @@ int sort_leaderboard(int *score_array, int score){
 
   for (int i = 0; i < position; i++){
 
-      if (score_array[i] < score_array[i+1] ){
+      if (leaderboard_score.score_array[i] < leaderboard_score.score_array[i+1] ){
 
           int temp = score_array[i+1];
-          score_array[i+1] = score_array[i];
-          score_array[i] = temp;
+          leaderboard_score.score_array[i+1] = leaderboard_score.score_array[i];
+          leaderboard_score.score_array[i] = temp;
 
       }
   }
@@ -315,12 +344,16 @@ int sort_leaderboard(int *score_array, int score){
   printf("\n 4 score array %d", score_array[3]);
   printf("\n 5 score array %d", score_array[4]);
 
+
+
+
 }
 
 
 
 
 int memlcd_leaderboard(int *score_array, int score){
+
 
 
 
@@ -350,14 +383,12 @@ int memlcd_leaderboard(int *score_array, int score){
   for (int i = 0; i < 5; i++){
 
 
-      printf("Leader row: %d", leader.row);
-
       char rankStr[4];
       char scoreStr[6];
 
       /* Convert rank (1-5) and score to strings */
       snprintf(rankStr, sizeof(rankStr), "%d.", i + 1);   // Rank, like "1.", "2.", etc.
-      snprintf(scoreStr, sizeof(scoreStr), "%d", score_array[i]); // Score, like "1000", "950", etc.
+      snprintf(scoreStr, sizeof(scoreStr), "%d", leaderboard_score.score_array[i]); // Score, like "1000", "950", etc.
 
       /* Draw rank on the left column */
       GLIB_drawString(&glibContext,
@@ -385,9 +416,9 @@ int memlcd_leaderboard(int *score_array, int score){
       printf("\n 4 score array %d", score_array[3]);
       printf("\n 5 score array %d", score_array[4]);
 
+
+
       sort_leaderboard(score_array,score);
-
-
 
 
 
@@ -451,6 +482,8 @@ game_over_t gameover_items[3] ={
 
 
 void memlcd_endgame(uint8_t a_gameover_menu){
+
+
 
   reset_game();
 

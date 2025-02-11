@@ -1,16 +1,16 @@
 #include <stdbool.h>
-#include "app.h"
-#include "memlcd_app.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <stdio.h>
-#include "glib.h"
 #include "main.h"
+#include "app.h"
+#include "memlcd_app.h"
+#include "glib.h"
 #include "game.h"
 #include "settings.h"
+#include "flash.h"
 
 
-int score_array[5];
 
 void initializeBlocks(void) {
   int counter = 0;
@@ -215,7 +215,9 @@ void updateBallPosition(void) {
 
                             score++;
 
-                            score_array[position] = score;
+                            leaderboard_score.score_array[position] = score;
+                            flash_save_user_data();
+
                         }
                     }
 
