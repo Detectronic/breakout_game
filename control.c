@@ -6,14 +6,11 @@
  *
  ******************************************************************************/
 #include "control.h"
-//#include "main.h"
 #include "main.h"
 
 int DOWN = 0;
 int UP = 1;
 
-
-//void sl_button_on_change(const sl_button_t *handle);
 
 void sl_button_on_change(const sl_button_t *handle){
 

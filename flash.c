@@ -23,7 +23,5 @@ void flash_save_user_data(void) {
     MSC_ErasePage(USERDATA_FLASH_BASE);  // Ensure flash is erased before writing
     MSC_WriteWord(USERDATA_FLASH_BASE, &leaderboard_score, sizeof(leaderboard_score));
 
-
-
 }
 

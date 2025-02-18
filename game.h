@@ -14,6 +14,7 @@
 #define BLOCK_OFFSET 10
 
 extern int score;
+extern int lives;
 
 extern void initializeBlocks(void);
 extern void normalizeDirection(void);

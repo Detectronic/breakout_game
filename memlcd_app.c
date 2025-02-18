@@ -13,6 +13,7 @@
 #include "main.h"
 #include "settings.h"
 #include "flash.h"
+#include "game.h"
 
 
 // String definitions
@@ -38,6 +39,7 @@ void drawBlocks(GLIB_Context_t *pContext);
 void updatePaddlePosition(Paddle_movement_t a_paddle_movement);
 void updateBallPosition(void);
 void drawGameObjects(void);
+void display_score(GLIB_Context_t *pContext);
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -98,18 +100,33 @@ void drawPaddle(GLIB_Context_t *pContext, int paddle_width) {
     GLIB_drawRectFilled(pContext, &myBoard);
 }
 
+void draw_lives(void){
+
+  for (int x = 0; x < lives; x++){
+
+      GLIB_drawCircleFilled(&glibContext, x * 10 + 5, 5, 2);
+
+  }
+
+}
+
 /***************************************************************************//**
  * Draw the game objects: blocks, paddle, and ball.
  ******************************************************************************/
 void drawGameObjects(void) {
 
   for (int x = 0; x < game.settings.number_of_balls; x++){
+
       if (game.balls[x].InPlay){
+
           GLIB_drawCircleFilled(&glibContext, (int)game.balls[x].XPos, (int)game.balls[x].YPos, (int)game.balls[x].Radius);
+
       }
   }
+
   drawBlocks(&glibContext);
   drawPaddle(&glibContext, game.settings.paddle_width);
+
 }
 
 /***************************************************************************//**
@@ -123,6 +140,17 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
     updatePaddlePosition(a_paddle_movement);
     updateBallPosition();
     drawGameObjects();
+    draw_lives();
+
+
+    GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
+    GLIB_drawString(&glibContext,
+                      "Score: ",
+                      15,
+                      70,
+                      5,
+                      true);
+
 
     DMD_updateDisplay(); // Refresh display
 }
@@ -158,7 +186,7 @@ menu_item_t menu_items[3] = {
 
 void memlcd_mainmenu(uint8_t a_main_menu){
 
-  //leaderboard_score.position = 0;
+
 
   reset_game();
 
@@ -405,21 +433,6 @@ int memlcd_leaderboard(int *score_array, int score){
                       70,                        // X-position for score column
                       30 + (i * 15),             // Y-position for each row, spaced by 15
                       true);                     // Transparency mod
-
-
-
-
-      printf("\nscores BEFORE sorting:");
-      printf("\n 1 score array %d", score_array[0]);
-      printf("\n 2 score array %d", score_array[1]);
-      printf("\n 3 score array %d", score_array[2]);
-      printf("\n 4 score array %d", score_array[3]);
-      printf("\n 5 score array %d", score_array[4]);
-
-
-
-      sort_leaderboard(score_array,score);
-
 
 
 

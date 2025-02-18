@@ -39,7 +39,6 @@ State_t last_state = ERROR;
 
 Menu_t menu;
 
-//int paddle_width = 0;
 
 
 /***************************************************************************//**
@@ -132,6 +131,7 @@ void app_process_action(void){
       if (new_state){
 
             printf("GAME\n");
+            printf("\nlives: %d\n", lives);
 
         }
 
@@ -199,9 +199,6 @@ void app_process_action(void){
 
                      }
 
-
-
-
                      return;
                      break;
 
@@ -229,7 +226,7 @@ void app_process_action(void){
                      ball_size++;
 
                      if (ball_size > 5){
-                         ball_size = 2;
+                         ball_size = 1;
 
                      }
 
@@ -295,6 +292,18 @@ void app_process_action(void){
 
     case ENDGAME:
 
+      if (new_state){
+        gameover = PLAY_AGAIN;
+
+        position++;
+
+        printf("ENDGAME\n");
+        printf("\nscores BEFORE sorting:");
+
+        sort_leaderboard(leaderboard_score.score_array,score);
+
+      }
+
       if (position > 5){
 
           position = 0;
@@ -306,14 +315,7 @@ void app_process_action(void){
 
 
 
-      if (new_state){
-          gameover = PLAY_AGAIN;
 
-          position++;
-
-          printf("ENDGAME\n");
-
-        }
 
       if (buttons[0].triggered){
 

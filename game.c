@@ -11,11 +11,13 @@
 #include "flash.h"
 
 
+lives = 3;
+
 
 void initializeBlocks(void) {
   int counter = 0;
 
-    for (int y = 0; y < ROWS_OF_BLOCKS; y++) {
+    for (int y = 1; y < ROWS_OF_BLOCKS; y++) {
 
         for (int x = 0; x < COLUMNS_OF_BLOCKS; x++) {
 
@@ -190,11 +192,6 @@ void updateBallPosition(void) {
                     atLeastOneBallActive = false;
                 }
 
-
-
-                //if (game.balls[0].InPlay && game.balls[1].InPlay){
-                 //   state = ENDGAME;
-                //}
                 printf("Bottom wall, out the game\n");
 
             }
@@ -226,6 +223,10 @@ void updateBallPosition(void) {
 
         }if (!atLeastOneBallActive){
             state = ENDGAME;
+
+            lives--;
+
+
         }
 
 

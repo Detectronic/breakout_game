@@ -24,15 +24,6 @@ void reset_game(void){
   game.settings.ball_speed = (float)ball_speed ;
   game.settings.paddle_speed = paddle_sensitivity_setting;
 
-  game.balls[1].XPos = 30.0f;
-  game.balls[1].YPos = 64.0f;
-  game.balls[1].XDir = 1.1f;
-  game.balls[1].YDir = -1.0f;
-  game.balls[1].Speed = game.settings.ball_speed;
-  game.balls[1].Collision = false;
-  game.balls[1].Radius = game.settings.ball_size;
-  game.balls[1].InPlay = true;
-
   game.balls[0].XPos = 64.0f;
   game.balls[0].YPos = 64.0f;
   game.balls[0].XDir = 0.1f;
@@ -41,6 +32,15 @@ void reset_game(void){
   game.balls[0].Collision = false;
   game.balls[0].Radius = game.settings.ball_size;
   game.balls[0].InPlay = true;
+
+  game.balls[1].XPos = 30.0f;
+  game.balls[1].YPos = 64.0f;
+  game.balls[1].XDir = 1.1f;
+  game.balls[1].YDir = -1.0f;
+  game.balls[1].Speed = game.settings.ball_speed;
+  game.balls[1].Collision = false;
+  game.balls[1].Radius = game.settings.ball_size;
+  game.balls[1].InPlay = true;
 
   game.balls[2].XPos = 64.0f;
   game.balls[2].YPos = 64.0f;
