@@ -1,6 +1,7 @@
 
 #include <stdbool.h>
-#include"main.h"
+#include "core/main.h"
+
 #include"flash.h"
 
 

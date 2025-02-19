@@ -1,15 +1,16 @@
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "main.h"
+#include "core/main.h"
+
 #include "app.h"
-#include "memlcd_app.h"
 #include "glib.h"
 #include "game.h"
-#include "settings.h"
-#include "flash.h"
-
+#include "core/model/settings.h"
+#include "core/model/flash.h"
+#include "core/view/screen.h"
 
 lives = 3;
 

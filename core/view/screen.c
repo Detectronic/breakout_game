@@ -6,14 +6,14 @@
 #include "em_assert.h"
 #include "glib.h"
 #include "dmd.h"
-#include "app.h"
-#include "memlcd_app.h"
+#include "core/view_model/app.h"
 #include "sl_sleeptimer.h"
-#include "control.h"
-#include "main.h"
-#include "settings.h"
-#include "flash.h"
-#include "game.h"
+#include "core/model/control.h"
+#include "core/main.h"
+#include "core/model/settings.h"
+#include "core/model/flash.h"
+#include "core/view_model/game.h"
+#include "core/view/screen.h"
 
 
 // String definitions

@@ -6,7 +6,8 @@
  *
  ******************************************************************************/
 #include "control.h"
-#include "main.h"
+#include "core/main.h"
+
 
 int DOWN = 0;
 int UP = 1;
