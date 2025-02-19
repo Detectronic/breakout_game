@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "main.h"
+#include "core/main.h"
+
 #include "settings.h"
-#include "app.h"
+#include "core/view_model/app.h"
 
 int position = 0;
 int number_of_balls_out_game;

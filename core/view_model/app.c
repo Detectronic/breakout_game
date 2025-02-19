@@ -1,156 +1,169 @@
-/***************************************************************************//**
- * @file app.c
- * @brief Top level application functions
- *******************************************************************************
- * # License
- * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
- *******************************************************************************
+/**
+ ********************************************************************************
+ * @file    app.c
+ * @author  AR
+ * @date    19/02/2025
+ * @brief
+ ********************************************************************************
+ */
+
+/*******************************************************************************
  *
- * The licensor of this software is Silicon Laboratories Inc. Your use of this
- * software is governed by the terms of Silicon Labs Master Software License
- * Agreement (MSLA) available at
- * www.silabs.com/about-us/legal/master-software-license-agreement. This
- * software is distributed to you in Source Code format and is governed by the
- * sections of the MSLA applicable to Source Code.
+ * INCLUDES
  *
  ******************************************************************************/
+
 #include <stdbool.h>
 #include <stdint.h>
 #include "app.h"
-#include "memlcd_app.h"
-#include "debug.h"
-#include "main.h"
-#include "settings.h"
+#include "core/utils/debug.h"
+#include "core/main.h"
+#include "core/model/settings.h"
 #include "game.h"
+#include "core/view/screen.h"
+
+
+/*******************************************************************************
+ *
+ * EXTERN VARIABLES
+ *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * PRIVATE MACROS AND DEFINES
+ *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * PRIVATE TYPEDEFS
+ *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * STATIC VARIABLES
+ *
+ ******************************************************************************/
 
 score = 0;
-
 int paddle_sensitivity_setting = 1;
 int number_of_balls = 1;
 int ball_speed = 1;
 int ball_size = 2;
 int game_setting;
-
-/*Declerations*/
-
 State_t state;
-
 State_t last_state = ERROR;
-
 Menu_t menu;
 
 
-
-/***************************************************************************//**
- * Initialize application.
+/*******************************************************************************
+ *
+ * GLOBAL VARIABLES
+ *
  ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * STATIC FUNCTION PROTOTYPES
+ *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * STATIC FUNCTIONS
+ *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *
+ * GLOBAL FUNCTIONS
+ *
+ ******************************************************************************/
+
+
 void app_init(void){
 
   app_iostream_eusart_init();
   memlcd_app_init();
-
 }
 
-/***************************************************************************//**
- * App ticking function.
- ******************************************************************************/
+
 void app_process_action(void){
 
-  app_iostream_eusart_process_action();
-  static int menu = 0;
-  static int setting = 0;
-  static int gameover = 0;
+	app_iostream_eusart_process_action();
+	static int menu = 0;
+	static int setting = 0;
+	static int gameover = 0;
+	bool new_state = false;
 
+	if (state != last_state){
+		new_state = true;
+	}
 
-  bool new_state = false;
-  if (state != last_state){
+	switch (state){
+		case MAINMENU:
+			if (new_state){
+				flash_load_user_data();
+				menu = MENU_START;
+				printf("MAINMENU\n");
+			}
 
-      new_state = true;
+			if (buttons[0].triggered){
+				buttons[0].triggered = false;
 
-  }
+				if (buttons[0].state){
 
+					switch(menu){
 
-  switch (state){
+						case MENU_START:
+							state = GAME;
+							break;
 
-    case MAINMENU:
+						case MENU_SETTINGS:
+							state = SETTINGS;
+							break;
 
-      if (new_state){
+						case MENU_LEADERBOARD :
+							state = LEADERBOARD;
+							break;
+					}
+				}
+			}
 
-          flash_load_user_data();
+			if (buttons[1].triggered){
+				buttons[1].triggered = false;
 
-          menu = MENU_START;
+				if (buttons[1].state){
 
-          printf("MAINMENU\n");
+					if (++menu == 3){
+						menu = 0;
+					}
+				}
+			}
 
-      }
+			memlcd_mainmenu(menu);
+			break;
 
-      if (buttons[0].triggered){
+		case GAME:
+			if (new_state){
+				printf("GAME\n");
+				printf("\nlives: %d\n", lives);
+			}
 
-          buttons[0].triggered = false;
+			Paddle_movement_t Pmove = NONE;
 
-          if (buttons[0].state){
+			if (buttons[0].state){
+				Pmove = LEFT;
+			}
 
-             switch(menu){
-
-               case MENU_START:
-                 state = GAME;
-                 break;
-
-               case MENU_SETTINGS:
-                 state = SETTINGS;
-                 break;
-
-               case MENU_LEADERBOARD :
-                 state = LEADERBOARD;
-                 break;
-             }
-          }
-
-      }
-
-      if (buttons[1].triggered){
-
-            buttons[1].triggered = false;
-
-           if (buttons[1].state){
-
-               if (++menu == 3){
-
-                   menu = 0;
-               }
-            }
-        }
-
-      memlcd_mainmenu(menu);
-      break;
-
-    case GAME:
-
-
-
-      if (new_state){
-
-            printf("GAME\n");
-            printf("\nlives: %d\n", lives);
-
-        }
-
-      Paddle_movement_t Pmove = NONE;
-
-         if (buttons[0].state){
-
-             Pmove = LEFT;
-
-         }
-
-           if (buttons[1].state){
-
+			if (buttons[1].state){
                Pmove = RIGHT;
+            }
 
-               }
-
-      memlcd_game(Pmove);
-      break;
+			memlcd_game(Pmove);
+			break;
 
 
     case SETTINGS:
