@@ -56,7 +56,7 @@ int game_setting;
 State_t state;
 State_t last_state = ERROR;
 Menu_t menu;
-
+Paddle_movement_t Pmove;
 
 /*******************************************************************************
  *
@@ -152,7 +152,7 @@ void app_process_action(void){
 				printf("\nlives: %d\n", lives);
 			}
 
-			Paddle_movement_t Pmove = NONE;
+			Pmove = NONE;
 
 			if (buttons[0].state){
 				Pmove = LEFT;

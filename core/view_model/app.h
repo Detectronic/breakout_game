@@ -63,6 +63,7 @@ extern GameOver_t gameover;
 extern Setting_t setting;
 extern State_t state;
 extern Menu_t menu;
+extern Paddle_movement_t Pmove;
 
 extern paddle_sensitivity_setting;
 extern number_of_balls;

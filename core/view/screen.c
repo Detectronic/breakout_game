@@ -36,7 +36,7 @@ int main_menu = 1;
  ******************************************************************************/
 void initializeBlocks(void);
 void drawBlocks(GLIB_Context_t *pContext);
-void updatePaddlePosition(Paddle_movement_t a_paddle_movement);
+ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement);
 void updateBallPosition(void);
 void drawGameObjects(void);
 void display_score(GLIB_Context_t *pContext);
@@ -94,7 +94,7 @@ void drawPaddle(GLIB_Context_t *pContext, int paddle_width) {
 
     myBoard.xMin = game.paddles[0].XPos;
     myBoard.yMin = 110;
-    myBoard.xMax = game.paddles[0].XPos + paddle_width; // Paddle width of 40
+    myBoard.xMax = game.paddles[0].XPos + game.settings.paddle_width; // Paddle width of 40
     myBoard.yMax = 120;
 
     GLIB_drawRectFilled(pContext, &myBoard);
@@ -134,10 +134,28 @@ void drawGameObjects(void) {
  ******************************************************************************/
 void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
-    GLIB_clear(&glibContext); // Clear screen
+	bool clear_screen = false;
 
 
-    updatePaddlePosition(a_paddle_movement);
+	if (!clear_screen){
+
+		clear_screen = true;
+		/* Clear the LCD screen with background color */
+		glibContext.backgroundColor = White;
+		glibContext.foregroundColor = Black;
+		GLIB_clear(&glibContext);
+
+	}
+
+    ScreenWipe_t _temp = updatePaddlePosition(a_paddle_movement);
+
+    glibContext.clippingRegion.xMin = _temp.x;
+	glibContext.clippingRegion.xMax = _temp.width ;
+	glibContext.clippingRegion.yMin = _temp.y;
+	glibContext.clippingRegion.yMax = _temp.height;
+
+	GLIB_clearRegion(&glibContext);
+
     updateBallPosition();
     drawGameObjects();
     draw_lives();

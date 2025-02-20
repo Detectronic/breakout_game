@@ -265,7 +265,13 @@ void drawBlocks(GLIB_Context_t *pContext) {
  ******************************************************************************/
 
 
-void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
+ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
+
+	ScreenWipe_t _return;
+	_return.x = game.paddles[0].XPos;
+	_return.y = 110;
+	_return.width = game.paddles[0].XPos + game.settings.paddle_width;
+	_return.height =  120;
 
     int screenWidth = 128;
 
@@ -281,8 +287,8 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
       case RIGHT:
         if (game.paddles[0].XPos <= 0){
-
-            return;
+        	Pmove = NONE;
+            return _return;
 
         }
 
@@ -294,8 +300,8 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
       case LEFT:
         if (game.paddles[0].XPos + game.settings.paddle_width >= screenWidth){
-
-            return;
+        	Pmove = NONE;
+            return _return;
 
         }
 
@@ -304,6 +310,8 @@ void updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
         game.paddles[0].XPos += paddle_sensitivity_setting;
         break;
 
-    }
 
+    }
+    _return.x = game.paddles[0].XPos;
+    return _return;
 }

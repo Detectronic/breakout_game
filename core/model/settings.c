@@ -11,7 +11,6 @@ int position = 0;
 int number_of_balls_out_game;
 bool atLeastOneBallActive;
 
-
 void reset_game(void){
 
 
