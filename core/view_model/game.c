@@ -151,19 +151,32 @@ bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint1
      return false;
 }
 
-void updateBallPosition(void) {
+ScreenWipe_t updateBallPosition(Ball_t balls) {
 
     int screenWidth = 128;
     int screenHeight = 128;
     int paddlesYposition = 110;
 
-    for (int x = 0; x < game.settings.number_of_balls;x++){
-        if (game.balls[x].InPlay){
 
+
+    for (int x = 0; x < game.settings.number_of_balls;x++){
+
+
+
+        if (game.balls[x].InPlay){
 
             // Update ball's position
             game.balls[x].XPos += game.balls[x].XDir * game.balls[x].Speed;
             game.balls[x].YPos += game.balls[x].YDir * game.balls[x].Speed;
+
+
+            ScreenWipe_t _return;
+					_return.x = game.balls[x].XPos;
+					_return.y = game.balls[x].YPos;
+					_return.width = game->balls[x]->XPos + game.balls->Radius;
+					_return.height = game->balls[x]->YPos + game->balls->Radius;
+
+
 
 
 
@@ -222,6 +235,8 @@ void updateBallPosition(void) {
                 }
             }
 
+            return _return;
+
         }if (!atLeastOneBallActive){
             state = ENDGAME;
 
@@ -233,6 +248,8 @@ void updateBallPosition(void) {
 
 
 }
+
+
 
 }
 
@@ -273,7 +290,7 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 	_return.width = game.paddles[0].XPos + game.settings.paddle_width;
 	_return.height =  120;
 
-    int screenWidth = 128;
+    int screenWidth = 127;
 
 
     switch(a_paddle_movement){
@@ -282,6 +299,19 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
         buttons[0].state = false;
         buttons[0].state = false;
+        break;
+
+
+      case LEFT:
+        if (game.paddles[0].XPos + game.settings.paddle_width >= 127){
+        	Pmove = NONE;
+            return _return;
+
+        }
+
+        game.paddles[0].Speed = 2;
+        game.paddles[0].Direction = 1;
+        game.paddles[0].XPos += paddle_sensitivity_setting;
         break;
 
 
@@ -295,19 +325,6 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
         game.paddles[0].Speed = -2;
         game.paddles[0].Direction = -1;
         game.paddles[0].XPos -= paddle_sensitivity_setting;
-        break;
-
-
-      case LEFT:
-        if (game.paddles[0].XPos + game.settings.paddle_width >= screenWidth){
-        	Pmove = NONE;
-            return _return;
-
-        }
-
-        game.paddles[0].Speed = 2;
-        game.paddles[0].Direction = 1;
-        game.paddles[0].XPos += paddle_sensitivity_setting;
         break;
 
 

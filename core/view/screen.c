@@ -137,6 +137,8 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 	bool clear_screen = false;
 
 
+
+
 	if (!clear_screen){
 
 		clear_screen = true;
@@ -147,16 +149,30 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
 	}
 
-    ScreenWipe_t _temp = updatePaddlePosition(a_paddle_movement);
+    ScreenWipe_t _paddle = updatePaddlePosition(a_paddle_movement);
 
-    glibContext.clippingRegion.xMin = _temp.x;
-	glibContext.clippingRegion.xMax = _temp.width ;
-	glibContext.clippingRegion.yMin = _temp.y;
-	glibContext.clippingRegion.yMax = _temp.height;
-
+    glibContext.clippingRegion.xMin = _paddle.x;
+	glibContext.clippingRegion.xMax = _paddle.width ;
+	glibContext.clippingRegion.yMin = _paddle.y;
+	glibContext.clippingRegion.yMax = _paddle.height;
 	GLIB_clearRegion(&glibContext);
 
-    updateBallPosition();
+	printf("\nDirection: %d", a_paddle_movement);
+
+	//printf("\nXMin: %d",_paddle.x );
+	printf("\nWidth: %d",_paddle.width );
+	//printf("\nYMin: %d",_paddle.y );
+	//printf("\nHeight: %d",_paddle.height );
+
+	ScreenWipe_t _ball = updateBallPosition(balls);
+
+	glibContext.clippingRegion.xMin = _ball.x;
+	glibContext.clippingRegion.xMax = _ball.width ;
+	glibContext.clippingRegion.yMin = _ball.y;
+	glibContext.clippingRegion.yMax = _ball.height;
+	GLIB_clearRegion(&glibContext);
+
+
     drawGameObjects();
     draw_lives();
 

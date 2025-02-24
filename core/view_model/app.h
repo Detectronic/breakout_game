@@ -29,7 +29,8 @@ typedef enum State_t {
   ENDGAME,          //2
   SETTINGS,         //3
   LEADERBOARD,      //4
-  ERROR
+  ERROR,
+  TEST
 } State_t;
 
 typedef enum Menu_t{
