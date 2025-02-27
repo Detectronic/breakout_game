@@ -151,10 +151,10 @@ bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint1
      return false;
 }
 
-ScreenWipe_t updateBallPosition(Ball_t balls) {
+ScreenWipe_t updateBallPosition(void) {
 
-    int screenWidth = 128;
-    int screenHeight = 128;
+    int screenWidth = 127;
+    int screenHeight = 127;
     int paddlesYposition = 110;
 
 
@@ -173,8 +173,8 @@ ScreenWipe_t updateBallPosition(Ball_t balls) {
             ScreenWipe_t _return;
 					_return.x = game.balls[x].XPos;
 					_return.y = game.balls[x].YPos;
-					_return.width = game->balls[x]->XPos + game.balls->Radius;
-					_return.height = game->balls[x]->YPos + game->balls->Radius;
+					_return.width = game.balls[x].XPos + game.balls->Radius;
+					_return.height = game.balls[x].YPos + game.balls->Radius;
 
 
 
@@ -253,7 +253,9 @@ ScreenWipe_t updateBallPosition(Ball_t balls) {
 
 }
 
-void drawBlocks(GLIB_Context_t *pContext) {
+ScreenWipe_t drawBlocks(GLIB_Context_t *pContext) {
+
+
 
     pContext->foregroundColor = Black;
     GLIB_Rectangle_t myRect;
@@ -265,15 +267,27 @@ void drawBlocks(GLIB_Context_t *pContext) {
             Block_t *block = &game.blocks[y][x];
             if (block->active) {
 
+
+
                 myRect.xMin = block->xMin;
                 myRect.yMin = block->yMin;
                 myRect.xMax = block->xMax;
                 myRect.yMax = block->yMax;
 
                 GLIB_drawRectFilled(pContext, &myRect);
+
+
             }
         }
     }
+
+    ScreenWipe_t _return;
+		_return.x = myRect.xMin;
+		_return.y = myRect.yMin;
+		_return.width = myRect.xMax;
+		_return.height = myRect.yMax;
+
+		return _return;
 }
 
 
@@ -303,7 +317,7 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
 
       case LEFT:
-        if (game.paddles[0].XPos + game.settings.paddle_width >= 127){
+        if (game.paddles[0].XPos + game.settings.paddle_width >= screenWidth){
         	Pmove = NONE;
             return _return;
 

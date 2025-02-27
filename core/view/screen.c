@@ -18,6 +18,10 @@
 
 // String definitions
 static GLIB_Context_t glibContext;
+static GLIB_Context_t glibContextPaddle;
+static GLIB_Context_t glibContextBall;
+static GLIB_Context_t glibContextBlock;
+
 GLIB_Rectangle_t myBoard;
 
 static int currentLine = 0;
@@ -35,9 +39,9 @@ int main_menu = 1;
  **************************   FUNCTION DECLARATIONS   **************************
  ******************************************************************************/
 void initializeBlocks(void);
-void drawBlocks(GLIB_Context_t *pContext);
+ScreenWipe_t drawBlocks(GLIB_Context_t *pContext);
 ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement);
-void updateBallPosition(void);
+ScreenWipe_t updateBallPosition(void);
 void drawGameObjects(void);
 void display_score(GLIB_Context_t *pContext);
 
@@ -124,7 +128,6 @@ void drawGameObjects(void) {
       }
   }
 
-  drawBlocks(&glibContext);
   drawPaddle(&glibContext, game.settings.paddle_width);
 
 }
@@ -135,9 +138,6 @@ void drawGameObjects(void) {
 void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
 	bool clear_screen = false;
-
-
-
 
 	if (!clear_screen){
 
@@ -151,11 +151,11 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
     ScreenWipe_t _paddle = updatePaddlePosition(a_paddle_movement);
 
-    glibContext.clippingRegion.xMin = _paddle.x;
-	glibContext.clippingRegion.xMax = _paddle.width ;
-	glibContext.clippingRegion.yMin = _paddle.y;
-	glibContext.clippingRegion.yMax = _paddle.height;
-	GLIB_clearRegion(&glibContext);
+    glibContextPaddle.clippingRegion.xMin = _paddle.x;
+    glibContextPaddle.clippingRegion.xMax = _paddle.width ;
+    glibContextPaddle.clippingRegion.yMin = _paddle.y;
+    glibContextPaddle.clippingRegion.yMax = _paddle.height;
+	GLIB_clearRegion(&glibContextPaddle);
 
 	printf("\nDirection: %d", a_paddle_movement);
 
@@ -164,16 +164,24 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 	//printf("\nYMin: %d",_paddle.y );
 	//printf("\nHeight: %d",_paddle.height );
 
-	ScreenWipe_t _ball = updateBallPosition(balls);
 
-	glibContext.clippingRegion.xMin = _ball.x;
-	glibContext.clippingRegion.xMax = _ball.width ;
-	glibContext.clippingRegion.yMin = _ball.y;
-	glibContext.clippingRegion.yMax = _ball.height;
-	GLIB_clearRegion(&glibContext);
+	ScreenWipe_t _ball = updateBallPosition();
+	glibContextBall.clippingRegion.xMin = _ball.x;
+	glibContextBall.clippingRegion.xMax = _ball.width ;
+	glibContextBall.clippingRegion.yMin = _ball.y;
+	glibContextBall.clippingRegion.yMax = _ball.height;
+	GLIB_clearRegion(&glibContextBall);
 
 
-    drawGameObjects();
+
+	GLIB_clearRegion(&glibContextBlock);
+   	ScreenWipe_t _blocks = drawBlocks(&glibContext);
+	glibContextBlock.clippingRegion.xMin = _blocks.x;
+	glibContextBlock.clippingRegion.xMax = _blocks.width ;
+	glibContextBlock.clippingRegion.yMin = _blocks.y;
+	glibContextBlock.clippingRegion.yMax = _blocks.height;
+
+
     draw_lives();
 
 
@@ -269,9 +277,6 @@ void memlcd_mainmenu(uint8_t a_main_menu){
 
   DMD_updateDisplay();
 
-
-
-
 }
 
 /*local strucuture Initiliasation */
@@ -314,10 +319,6 @@ setting_item_t setting_items[5] ={
     }
 };
 
-
-
-
-
 void memlcd_settings(uint8_t a_settings_menu,int *a_game_settings ){
 
   char game_settings[50];
@@ -357,9 +358,7 @@ void memlcd_settings(uint8_t a_settings_menu,int *a_game_settings ){
                             10,                            // X-position for centering
                             setting_items[x].yPos,         // Y-position for "Start" option
                             true);                         // Transparency mode
-
         }
-
 
         else {
 
@@ -375,11 +374,7 @@ void memlcd_settings(uint8_t a_settings_menu,int *a_game_settings ){
                         setting_items[x].yPos,         // Y-position for "Start" option
                         true);                         // Transparency mode
 
-
-
   }
-
-
 
   /* Update the display */
   DMD_updateDisplay();
@@ -405,9 +400,6 @@ int sort_leaderboard(int *score_array, int score){
   printf("\n 3 score array %d", score_array[2]);
   printf("\n 4 score array %d", score_array[3]);
   printf("\n 5 score array %d", score_array[4]);
-
-
-
 
 }
 

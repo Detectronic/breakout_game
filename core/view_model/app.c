@@ -150,6 +150,8 @@ void app_process_action(void){
 			if (new_state){
 				printf("GAME\n");
 				printf("\nlives: %d\n", lives);
+
+				buttons[0].state = false;
 			}
 
 			Pmove = NONE;
