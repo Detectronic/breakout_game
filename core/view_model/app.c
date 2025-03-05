@@ -128,6 +128,11 @@ void app_process_action(void){
 						case MENU_LEADERBOARD :
 							state = LEADERBOARD;
 							break;
+
+						case MENU_TEST:
+							state = TEST;
+							break;
+
 					}
 				}
 			}
@@ -137,7 +142,7 @@ void app_process_action(void){
 
 				if (buttons[1].state){
 
-					if (++menu == 3){
+					if (++menu == 4){
 						menu = 0;
 					}
 				}
@@ -373,9 +378,27 @@ void app_process_action(void){
       memlcd_endgame(gameover);
       break;
 
+    case TEST:
+
+    	if (buttons[1].triggered){
+
+			buttons[1].triggered = false;
+
+	    if (buttons[1].state){
+
+	    	state = MAINMENU;
+
+
+    	      }
+    	  }
+
+    	memlcd_test();
+    	break;
+
     default:
-      memlcd_error();
-      break;
+
+        memlcd_error();
+        break;
 
   }
 

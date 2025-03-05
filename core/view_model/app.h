@@ -36,7 +36,8 @@ typedef enum State_t {
 typedef enum Menu_t{
   MENU_START,       //0
   MENU_SETTINGS,    //1
-  MENU_LEADERBOARD  //2
+  MENU_LEADERBOARD,  //2
+  MENU_TEST
 }Menu_t;
 
 typedef enum Setting_t{

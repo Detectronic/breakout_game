@@ -21,7 +21,9 @@ static GLIB_Context_t glibContext;
 static GLIB_Context_t glibContextPaddle;
 static GLIB_Context_t glibContextBall;
 static GLIB_Context_t glibContextBlock;
+static GLIB_Context_t glibContextTest;
 
+GLIB_Rectangle_t test;
 GLIB_Rectangle_t myBoard;
 
 static int currentLine = 0;
@@ -32,9 +34,6 @@ static int currentLine = 0;
 //Global varible
 int main_menu = 1;
 
-
-
-
 /*******************************************************************************
  **************************   FUNCTION DECLARATIONS   **************************
  ******************************************************************************/
@@ -44,6 +43,7 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement);
 ScreenWipe_t updateBallPosition(void);
 void drawGameObjects(void);
 void display_score(GLIB_Context_t *pContext);
+void memlcd_test(void);
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -164,15 +164,12 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 	//printf("\nYMin: %d",_paddle.y );
 	//printf("\nHeight: %d",_paddle.height );
 
-
 	ScreenWipe_t _ball = updateBallPosition();
 	glibContextBall.clippingRegion.xMin = _ball.x;
 	glibContextBall.clippingRegion.xMax = _ball.width ;
 	glibContextBall.clippingRegion.yMin = _ball.y;
 	glibContextBall.clippingRegion.yMax = _ball.height;
 	GLIB_clearRegion(&glibContextBall);
-
-
 
 	GLIB_clearRegion(&glibContextBlock);
    	ScreenWipe_t _blocks = drawBlocks(&glibContext);
@@ -181,9 +178,7 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 	glibContextBlock.clippingRegion.yMin = _blocks.y;
 	glibContextBlock.clippingRegion.yMax = _blocks.height;
 
-
     draw_lives();
-
 
     GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
     GLIB_drawString(&glibContext,
@@ -192,7 +187,6 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
                       70,
                       5,
                       true);
-
 
     DMD_updateDisplay(); // Refresh display
 }
@@ -206,7 +200,7 @@ typedef struct menu_item_t{
 }menu_item_t;
 
 
-menu_item_t menu_items[3] = {
+menu_item_t menu_items[4] = {
     {
         .str = "Start",
         .strlen = 5,
@@ -221,10 +215,47 @@ menu_item_t menu_items[3] = {
         .str = "Leaderboard",
         .strlen = 11,
         .yPos = 90
-    }
+    },
+	{
+		.str = "Test",
+		.strlen = 5,
+		.yPos = 110
+
+	}
 };
 
+void memlcd_test(void){
 
+	test.xMin = 0;
+	test.yMin = 0;
+	test.xMax = 127;
+	test.yMax = 127;
+
+	bool clear_screen = false;
+
+	if (!clear_screen){
+
+		clear_screen = true;
+		/* Clear the LCD screen with background color */
+		glibContext.backgroundColor = White;
+		glibContext.foregroundColor = Black;
+		GLIB_clear(&glibContext);
+
+		GLIB_drawRectFilled(&glibContextTest, &test);
+	}
+
+	glibContextTest.foregroundColor = Black;
+
+	glibContextTest.clippingRegion.xMin = 0;
+	glibContextTest.clippingRegion.xMax = 50;
+	glibContextTest.clippingRegion.yMin = 1;
+	glibContextTest.clippingRegion.yMax = 50;
+	GLIB_clearRegion(&glibContextTest);
+
+
+	DMD_updateDisplay();
+
+}
 
 void memlcd_mainmenu(uint8_t a_main_menu){
 
@@ -251,7 +282,7 @@ void memlcd_mainmenu(uint8_t a_main_menu){
   /* Switch to a moderately large font for the menu options */
   GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNormal8x8);
 
-  for(int x = 0; x < 3; x++){
+  for(int x = 0; x < 4; x++){
 
       if(x == a_main_menu){
 
@@ -407,9 +438,6 @@ int sort_leaderboard(int *score_array, int score){
 
 
 int memlcd_leaderboard(int *score_array, int score){
-
-
-
 
   /* Clear the LCD screen and set the global background to white */
   glibContext.backgroundColor = White;
