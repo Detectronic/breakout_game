@@ -21,7 +21,12 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "em_cmu.h"
+#include "em_gpio.h"
+#include "em_timer.h"
 
+#define LEDPORT gpioPortD
+#define LEDPIN 	2
 
 typedef enum State_t {
   MAINMENU,         //0

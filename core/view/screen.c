@@ -33,7 +33,7 @@ static int currentLine = 0;
 
 //Global varible
 int main_menu = 1;
-
+extern bool Timer0_OF;
 /*******************************************************************************
  **************************   FUNCTION DECLARATIONS   **************************
  ******************************************************************************/
@@ -137,6 +137,10 @@ void drawGameObjects(void) {
  ******************************************************************************/
 void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
+	if (Timer0_OF == true){
+
+
+
 	bool clear_screen = false;
 
 	if (!clear_screen){
@@ -189,6 +193,11 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
                       true);
 
     DMD_updateDisplay(); // Refresh display
+
+    GPIO_PinOutToggle(LEDPORT,LEDPIN);
+    Timer0_OF = false;
+
+    }
 }
 
 

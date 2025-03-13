@@ -57,6 +57,7 @@ State_t state;
 State_t last_state = ERROR;
 Menu_t menu;
 Paddle_movement_t Pmove;
+extern bool Timer0_OF;
 
 /*******************************************************************************
  *
@@ -87,6 +88,10 @@ void app_init(void){
 
   app_iostream_eusart_init();
   memlcd_app_init();
+
+  GPIO_PinModeSet(LEDPORT,LEDPIN,gpioModePushPull,1);
+  Timer0_Init();
+  Timer0_Enable();
 }
 
 
@@ -97,6 +102,7 @@ void app_process_action(void){
 	static int setting = 0;
 	static int gameover = 0;
 	bool new_state = false;
+
 
 	if (state != last_state){
 		new_state = true;
@@ -152,12 +158,19 @@ void app_process_action(void){
 			break;
 
 		case GAME:
+
+
+
+
 			if (new_state){
 				printf("GAME\n");
 				printf("\nlives: %d\n", lives);
 
 				buttons[0].state = false;
 			}
+
+
+
 
 			Pmove = NONE;
 
@@ -379,6 +392,14 @@ void app_process_action(void){
       break;
 
     case TEST:
+    	if (Timer0_OF == true){
+
+
+    		GPIO_PinOutToggle(LEDPORT,LEDPIN);
+    		Timer0_OF = false;
+
+		}
+
 
     	if (buttons[1].triggered){
 
