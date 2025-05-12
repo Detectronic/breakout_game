@@ -14,12 +14,13 @@
  ******************************************************************************/
 #include "Timer0.h"
 
-
 /*******************************************************************************
  *
  * EXTERN VARIABLES
  *
  ******************************************************************************/
+
+bool timer = false;
 
 /*******************************************************************************
  *
@@ -100,7 +101,26 @@ void TIMER0_IRQHandler(void)
 	uint32_t flags = TIMER_IntGet(TIMER0);
 	TIMER_IntClear(TIMER0,flags);
 
+    GPIO_PinOutSet(LEDPORT,LEDPIN);
 	Timer0_OF = true;
+
+    if (state == GAME){
+
+    	if (!timer){
+
+    		printf("\n(GAME)            TIMER0_IRQHandler");
+			timer = true;
+
+			}
+
+    	memlcd_game(Pmove);
+
+
+    }
+
+
+    GPIO_PinOutClear(LEDPORT,LEDPIN);
+
 }
 /*******************************************************************************
  *

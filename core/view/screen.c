@@ -14,7 +14,7 @@
 #include "core/model/flash.h"
 #include "core/view_model/game.h"
 #include "core/view/screen.h"
-
+#include "core/model/Timer0.h"
 
 // String definitions
 static GLIB_Context_t glibContext;
@@ -34,6 +34,8 @@ static int currentLine = 0;
 //Global varible
 int main_menu = 1;
 extern bool Timer0_OF;
+bool once = false;
+bool memlcdgame_timer = false;
 /*******************************************************************************
  **************************   FUNCTION DECLARATIONS   **************************
  ******************************************************************************/
@@ -137,6 +139,25 @@ void drawGameObjects(void) {
  ******************************************************************************/
 void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
+
+	if (!memlcdgame_timer){
+
+		printf("\n(GAME)            memlcd_game");
+		memlcdgame_timer = true;
+
+	}
+
+
+	if (!once){
+
+		printf("\nReached the memlcd draw game screen function inside screen.c");
+		once = true;
+		printf("\n(game)   state of timer0_of (%d)",Timer0_OF );
+	}
+
+
+
+
 	if (Timer0_OF == true){
 
 
@@ -145,7 +166,7 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
 
 	if (!clear_screen){
 
-		clear_screen = true;
+		//clear_screen = true;
 		/* Clear the LCD screen with background color */
 		glibContext.backgroundColor = White;
 		glibContext.foregroundColor = Black;
@@ -161,10 +182,10 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
     glibContextPaddle.clippingRegion.yMax = _paddle.height;
 	GLIB_clearRegion(&glibContextPaddle);
 
-	printf("\nDirection: %d", a_paddle_movement);
+	//printf("\nDirection: %d", a_paddle_movement);
 
 	//printf("\nXMin: %d",_paddle.x );
-	printf("\nWidth: %d",_paddle.width );
+	//printf("\nWidth: %d",_paddle.width );
 	//printf("\nYMin: %d",_paddle.y );
 	//printf("\nHeight: %d",_paddle.height );
 
@@ -192,10 +213,20 @@ void memlcd_game(Paddle_movement_t a_paddle_movement) {
                       5,
                       true);
 
+
+
+
+
+
+
     DMD_updateDisplay(); // Refresh display
 
-    GPIO_PinOutToggle(LEDPORT,LEDPIN);
+    //GPIO_PinOutToggle(LEDPORT,LEDPIN);
     Timer0_OF = false;
+
+
+
+
 
     }
 }

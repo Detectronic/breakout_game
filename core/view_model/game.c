@@ -11,6 +11,7 @@
 #include "core/model/settings.h"
 #include "core/model/flash.h"
 #include "core/view/screen.h"
+#include "core/model/Timer0.h"
 
 lives = 3;
 
@@ -105,7 +106,7 @@ bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint1
       //Are we making contact with ANY edge of the paddle
        if (game.balls[x].YPos + game.balls[0].Radius >= objYPos && game.balls[x].YPos <= objYPos + height  && game.balls[x].XPos + game.balls[x].Radius >= objXPos && game.balls[x].XPos <= objXPos + width) {
 
-       printf("TOUCHED paddle\n");
+       //printf("TOUCHED paddle\n");
        //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , ball.XDir , ball.YDir , ball.XPos , ball.YPos);
 
        if (!game.balls[x].Collision){
@@ -115,25 +116,25 @@ bool CheckBallObjCollision(float objXPos, float objYPos , uint16_t width , uint1
 
            if (game.balls[x].YPos + game.balls[x].Radius == objYPos && game.balls[x].YDir > 0){
 
-              printf("Bounced of the TOP object\n");
+              //printf("Bounced of the TOP object\n");
               game.balls[x].YDir *= -1;
               return true;
           }
 
            else if (game.balls[x].YPos == objYPos + height && game.balls[x].YDir < 0){
-               printf("Bounced of the BOTTOM object\n");
+               //printf("Bounced of the BOTTOM object\n");
                game.balls[x].YDir *= -1;
                return true;
           }
 
           else if (game.balls[x].XPos + game.balls[x].Radius == objXPos &&  game.balls[x].XDir > 0 ){
-              printf("Bounced of the LEFT object\n");
+              //printf("Bounced of the LEFT object\n");
               game.balls[x].XDir *= -1;
               return true;
           }
 
           else if (game.balls[0].XPos == objXPos + width &&  game.balls[0].XDir < 0 ){
-              printf("Bounced of the RIGHT object\n");
+              //printf("Bounced of the RIGHT object\n");
               game.balls[x].XDir *= -1;
               return true;
           }
@@ -182,16 +183,16 @@ ScreenWipe_t updateBallPosition(void) {
 
             // Bounce off the left and right screen edges
             if (game.balls[x].XPos <= 0 || game.balls[x].XPos >= screenWidth) {
-                printf("Bounced of the side walls\n");
-                printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
+                //printf("Bounced of the side walls\n");
+                //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
 
 
                 game.balls[x].XDir *= -1;
             }
             // Bounce off top
             if (game.balls[x].YPos <= 0) {
-                printf("Bounced of the top wall\n");
-                printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
+                //printf("Bounced of the top wall\n");
+                //printf("XDir  : %f , YDir : %f  , XPos : %f , YPos : %f \n" , game.balls[0].XDir , game.balls[0].YDir , game.balls[0].XPos , game.balls[0].YPos);
 
 
                 game.balls[x].YDir *= -1;
@@ -206,7 +207,7 @@ ScreenWipe_t updateBallPosition(void) {
                     atLeastOneBallActive = false;
                 }
 
-                printf("Bottom wall, out the game\n");
+                //printf("Bottom wall, out the game\n");
 
             }
 
@@ -309,7 +310,10 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
     switch(a_paddle_movement){
 
+
       case NONE:
+
+        //printf("(game)   updatePaddlePosition  ");
 
         buttons[0].state = false;
         buttons[0].state = false;
@@ -323,6 +327,8 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
 
         }
 
+        //printf("	(updatePaddlePosition)   MOVED(LEFT)Obeyed command");
+
         game.paddles[0].Speed = 2;
         game.paddles[0].Direction = 1;
         game.paddles[0].XPos += paddle_sensitivity_setting;
@@ -335,6 +341,8 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement) {
             return _return;
 
         }
+
+        //printf("	(updatePaddlePosition)   Moved(RIGHT)Obeyed command");
 
         game.paddles[0].Speed = -2;
         game.paddles[0].Direction = -1;

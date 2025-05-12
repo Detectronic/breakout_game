@@ -53,6 +53,7 @@ int number_of_balls = 1;
 int ball_speed = 1;
 int ball_size = 2;
 int game_setting;
+int frame;
 State_t state;
 State_t last_state = ERROR;
 Menu_t menu;
@@ -161,6 +162,19 @@ void app_process_action(void){
 
 
 
+			void check_screen(void){
+
+				static uint32_t temp_x;
+
+				if (temp_x != game.paddles->XPos){
+					printf("\nThe paddle has been redrawn");
+					temp_x = game.paddles->XPos;
+				}
+
+			}
+
+
+
 
 			if (new_state){
 				printf("GAME\n");
@@ -171,18 +185,35 @@ void app_process_action(void){
 
 
 
+			printf("\n Frame %d Ball Y: %f", frame,game.balls->YPos);
+			printf("\n Frame %d Ball x: %f \n",frame, game.balls->XPos);
+
 
 			Pmove = NONE;
 
 			if (buttons[0].state){
+
+				float paddles_x = game.paddles->XPos;
+
+
+				printf("\n paddle x: %f", paddles_x);
 				Pmove = LEFT;
 			}
 
 			if (buttons[1].state){
+
+			   float paddles_x = game.paddles->XPos;
+
+
+			   printf("\n paddle x: %f", paddles_x);
                Pmove = RIGHT;
             }
+			//_paddle.x
+			TIMER0_IRQHandler();
 
-			memlcd_game(Pmove);
+			frame++;
+
+			//memlcd_game(Pmove);
 			break;
 
 
@@ -395,7 +426,7 @@ void app_process_action(void){
     	if (Timer0_OF == true){
 
 
-    		GPIO_PinOutToggle(LEDPORT,LEDPIN);
+    		//GPIO_PinOutToggle(LEDPORT,LEDPIN);
     		Timer0_OF = false;
 
 		}

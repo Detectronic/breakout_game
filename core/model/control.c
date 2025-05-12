@@ -22,11 +22,15 @@ void sl_button_on_change(const sl_button_t *handle){
         buttons[0].state = HIGH;
         buttons[0].triggered = true;
 
+        printf("\nButton 0 pressed down");
+
     } else if (&BUTTON_INSTANCE_1 == handle) {
 
         /* When button 1 is pushed down*/
         buttons[1].state = HIGH;
         buttons[1].triggered = true;
+
+        printf("\nButton 1 pressed down");
 
     }
   }
@@ -38,11 +42,15 @@ void sl_button_on_change(const sl_button_t *handle){
             buttons[0].state = LOW;
             buttons[0].triggered = true;
 
+            printf("\nButton 0 is released");
+
         } else if (&BUTTON_INSTANCE_1 == handle) {
 
             /* When button 1 is released*/
             buttons[1].state = LOW;
             buttons[1].triggered = true;
+
+            printf("\nButton 1 is released");
 
         }
       }

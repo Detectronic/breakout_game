@@ -27,7 +27,7 @@ void reset_game(void){
   game.balls[0].XPos = 64.0f;
   game.balls[0].YPos = 64.0f;
   game.balls[0].XDir = 0.1f;
-  game.balls[0].YDir = -1.0f;
+  game.balls[0].YDir = -0.5f;
   game.balls[0].Speed = game.settings.ball_speed;
   game.balls[0].Collision = false;
   game.balls[0].Radius = game.settings.ball_size;
