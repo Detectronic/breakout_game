@@ -75,6 +75,8 @@ void normalizeDirection(void) {
     game.balls[0].XDir /= magnitude;
     game.balls[0].YDir /= magnitude;
 
+
+
     // Prevent perfectly vertical or horizontal movement
     if (fabs(game.balls[0].XDir) < 0.1) {
 
@@ -166,9 +168,13 @@ ScreenWipe_t updateBallPosition(void) {
 
         if (game.balls[x].InPlay){
 
+
+        	float frame_rate_multi = 1.0f / TIMER0_FREQUENCY;
+
+
             // Update ball's position
-            game.balls[x].XPos += game.balls[x].XDir * game.balls[x].Speed;
-            game.balls[x].YPos += game.balls[x].YDir * game.balls[x].Speed;
+            game.balls[x].XPos += game.balls[x].XDir * game.balls[x].Speed * frame_rate_multi;
+            game.balls[x].YPos += game.balls[x].YDir * game.balls[x].Speed * frame_rate_multi;
 
 
             ScreenWipe_t _return;

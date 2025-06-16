@@ -31,7 +31,7 @@ extern "C" {
  * MACROS AND DEFINES
  *
  ******************************************************************************/
-#define TIMER0_FREQUENCY 10 //Hz
+#define TIMER0_FREQUENCY 60 //Hz
 
 
 

@@ -50,7 +50,7 @@
 score = 0;
 int paddle_sensitivity_setting = 1;
 int number_of_balls = 1;
-int ball_speed = 1;
+
 int ball_size = 2;
 int game_setting;
 int frame;
@@ -185,8 +185,9 @@ void app_process_action(void){
 
 
 
-			printf("\n Frame %d Ball Y: %f", frame,game.balls->YPos);
-			printf("\n Frame %d Ball x: %f \n",frame, game.balls->XPos);
+			printf("\n Frame %d Ball Y: %f,YDir; %f, Speed: %f", frame,game.balls-> YPos,game.balls->YDir, game.balls->Speed);
+			printf("\n Frame %d Ball x: %f, XDir; %f \n",frame, game.balls->XPos, game.balls->XDir);
+
 
 
 			Pmove = NONE;
@@ -235,7 +236,8 @@ void app_process_action(void){
 
                    case BALL_SPEED:
 
-                     game_setting = ball_speed;
+#if 0
+                	 game_setting = ball_speed;
 
                      ball_speed++;
 
@@ -244,7 +246,7 @@ void app_process_action(void){
 
 
                      }
-
+#endif
 
 
                      return;
@@ -423,28 +425,61 @@ void app_process_action(void){
       break;
 
     case TEST:
-    	if (Timer0_OF == true){
+
+    	void TEST_check_screen(void){
 
 
-    		//GPIO_PinOutToggle(LEDPORT,LEDPIN);
-    		Timer0_OF = false;
+			static uint32_t temp_x;
+
+			if (temp_x != game.paddles->XPos){
+				printf("\nThe paddle has been redrawn");
+				temp_x = game.paddles->XPos;
+			}
 
 		}
 
 
-    	if (buttons[1].triggered){
-
-			buttons[1].triggered = false;
-
-	    if (buttons[1].state){
-
-	    	state = MAINMENU;
 
 
-    	      }
-    	  }
+		if (new_state){
+			printf("GAME\n");
+			printf("\nlives: %d\n", lives);
 
-    	memlcd_test();
+			buttons[0].state = false;
+		}
+
+
+
+		printf("\n Frame %d Ball Y: %f,YDir; %f, Speed: %f", frame,game.balls-> YPos,game.balls->YDir, game.balls->Speed);
+		printf("\n Frame %d Ball x: %f, XDir; %f \n",frame, game.balls->XPos, game.balls->XDir);
+
+
+
+		Pmove = NONE;
+
+		if (buttons[0].state){
+
+			float paddles_x = game.paddles->XPos;
+
+
+			printf("\n paddle x: %f", paddles_x);
+			Pmove = LEFT;
+		}
+
+		if (buttons[1].state){
+
+		   float paddles_x = game.paddles->XPos;
+
+
+		   printf("\n paddle x: %f", paddles_x);
+		   Pmove = RIGHT;
+		}
+		//_paddle.x
+		TIMER0_IRQHandler();
+
+		frame++;
+
+    	//memlcd_test();
     	break;
 
     default:

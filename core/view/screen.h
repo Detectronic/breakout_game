@@ -56,12 +56,16 @@ typedef struct ScreenWipe_t{
  ******************************************************************************/
 void memlcd_app_init(void);
 void memlcd_game(Paddle_movement_t a_paddle_movement);
+
+void memlcd_test(Paddle_movement_t a_paddle_movement);
+
 void memlcd_mainmenu(uint8_t a_main_menu);
 void memlcd_endgame(uint8_t a_gameover_menu);
 void memlcd_settings(uint8_t a_settings_menu,int *a_game_settings);
 int memlcd_leaderboard(int *score_array, int score);
 void memlcd_error(void);
 void reset_game(void);
+void test_reset_game(void);
 #ifdef __cplusplus
 }
 #endif

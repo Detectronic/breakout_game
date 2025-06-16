@@ -46,7 +46,7 @@ typedef struct Block_t {
 
 typedef struct Settings_t {
     int number_of_balls;
-    int ball_speed;
+    float ball_speed;
     int ball_size;
     int paddle_width;
     int paddle_speed;

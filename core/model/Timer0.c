@@ -104,7 +104,7 @@ void TIMER0_IRQHandler(void)
     GPIO_PinOutSet(LEDPORT,LEDPIN);
 	Timer0_OF = true;
 
-    if (state == GAME){
+    if (state == GAME ){
 
     	if (!timer){
 
@@ -117,6 +117,20 @@ void TIMER0_IRQHandler(void)
 
 
     }
+
+    else if (state == TEST ){
+
+		if (!timer){
+
+			printf("\n(TEST)            TIMER0_IRQHandler");
+			timer = true;
+
+			}
+
+		memlcd_game(Pmove);
+
+
+	}
 
 
     GPIO_PinOutClear(LEDPORT,LEDPIN);

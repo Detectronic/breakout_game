@@ -45,7 +45,7 @@ ScreenWipe_t updatePaddlePosition(Paddle_movement_t a_paddle_movement);
 ScreenWipe_t updateBallPosition(void);
 void drawGameObjects(void);
 void display_score(GLIB_Context_t *pContext);
-void memlcd_test(void);
+
 
 /*******************************************************************************
  **************************   GLOBAL FUNCTIONS   *******************************
@@ -264,36 +264,94 @@ menu_item_t menu_items[4] = {
 	}
 };
 
-void memlcd_test(void){
+void memlcd_test(Paddle_movement_t a_paddle_movement){
 
-	test.xMin = 0;
-	test.yMin = 0;
-	test.xMax = 127;
-	test.yMax = 127;
+	test_reset_game();
+
+	if (!memlcdgame_timer){
+
+
+		printf("\n(TEST)            memlcd_TEST");
+		memlcdgame_timer = true;
+
+	}
+
+
+	if (!once){
+
+		printf("\nReached the memlcd draw game screen function inside screen.c");
+		once = true;
+		printf("\n(game)   state of timer0_of (%d)",Timer0_OF );
+	}
+
+
+
+
+	if (Timer0_OF == true){
+
+
 
 	bool clear_screen = false;
 
 	if (!clear_screen){
 
-		clear_screen = true;
+		//clear_screen = true;
 		/* Clear the LCD screen with background color */
 		glibContext.backgroundColor = White;
 		glibContext.foregroundColor = Black;
 		GLIB_clear(&glibContext);
 
-		GLIB_drawRectFilled(&glibContextTest, &test);
 	}
 
-	glibContextTest.foregroundColor = Black;
+	ScreenWipe_t _paddle = updatePaddlePosition(a_paddle_movement);
 
-	glibContextTest.clippingRegion.xMin = 0;
-	glibContextTest.clippingRegion.xMax = 50;
-	glibContextTest.clippingRegion.yMin = 1;
-	glibContextTest.clippingRegion.yMax = 50;
-	GLIB_clearRegion(&glibContextTest);
+	glibContextPaddle.clippingRegion.xMin = _paddle.x;
+	glibContextPaddle.clippingRegion.xMax = _paddle.width ;
+	glibContextPaddle.clippingRegion.yMin = _paddle.y;
+	glibContextPaddle.clippingRegion.yMax = _paddle.height;
+	GLIB_clearRegion(&glibContextPaddle);
+
+	//printf("\nDirection: %d", a_paddle_movement);
+
+	//printf("\nXMin: %d",_paddle.x );
+	//printf("\nWidth: %d",_paddle.width );
+	//printf("\nYMin: %d",_paddle.y );
+	//printf("\nHeight: %d",_paddle.height );
+
+	ScreenWipe_t _ball = updateBallPosition();
+	glibContextBall.clippingRegion.xMin = _ball.x;
+	glibContextBall.clippingRegion.xMax = _ball.width ;
+	glibContextBall.clippingRegion.yMin = _ball.y;
+	glibContextBall.clippingRegion.yMax = _ball.height;
+	GLIB_clearRegion(&glibContextBall);
+
+	GLIB_clearRegion(&glibContextBlock);
+	ScreenWipe_t _blocks = drawBlocks(&glibContext);
+	glibContextBlock.clippingRegion.xMin = _blocks.x;
+	glibContextBlock.clippingRegion.xMax = _blocks.width ;
+	glibContextBlock.clippingRegion.yMin = _blocks.y;
+	glibContextBlock.clippingRegion.yMax = _blocks.height;
+
+	draw_lives();
+
+	GLIB_setFont(&glibContext, (GLIB_Font_t *)&GLIB_FontNarrow6x8);
+	GLIB_drawString(&glibContext,
+					  "Score: ",
+					  15,
+					  70,
+					  5,
+					  true);
 
 
-	DMD_updateDisplay();
+
+
+
+
+
+	DMD_updateDisplay(); // Refresh display
+
+	//GPIO_PinOutToggle(LEDPORT,LEDPIN);
+	Timer0_OF = false;
 
 }
 
